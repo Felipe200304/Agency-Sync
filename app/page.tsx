@@ -2,7 +2,6 @@ import { Navbar } from '@/components/landing/navbar'
 import { Hero } from '@/components/landing/hero'
 import { Features } from '@/components/landing/features'
 import { HowItWorks } from '@/components/landing/how-it-works'
-import { Stats } from '@/components/landing/stats'
 import { Footer } from '@/components/landing/footer'
 
 export default function HomePage() {
@@ -10,7 +9,6 @@ export default function HomePage() {
     <main className="min-h-screen bg-background">
       <Navbar />
       <Hero />
-      <Stats />
       <Features />
       <HowItWorks />
 
@@ -31,7 +29,7 @@ export default function HomePage() {
             <span className="gold-text italic">agência ao próximo nível?</span>
           </h2>
           <p className="text-foreground/50 text-lg mb-10 leading-relaxed">
-            Junte-se a centenas de agências que já usam o Agency Sync para gerenciar seu negócio com eficiência e elegância.
+            Gerencie sua agência com eficiência e elegância, do casting ao pagamento, em uma única plataforma.
           </p>
           <a
             href="/login"

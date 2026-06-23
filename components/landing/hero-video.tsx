@@ -2,12 +2,12 @@
 
 import { useEffect, useRef } from 'react'
 
-/** Velocidade de reprodução do vídeo de fundo (0.5 = metade da velocidade). */
-const PLAYBACK_RATE = 0.5
+/** Velocidade de reprodução do vídeo de fundo (1 = normal; menor = mais lento/cinematográfico). */
+const PLAYBACK_RATE = 0.75
 /** Zoom no rosto da modelo (1 = sem zoom). Ajuste para aproximar/afastar. */
-const FACE_ZOOM = 1.7
+const FACE_ZOOM = 1.1
 /** Ponto do quadro onde está o rosto (x% y%) — usado como foco do zoom. */
-const FACE_FOCUS = '50% 24%'
+const FACE_FOCUS = '50% 35%'
 
 export function HeroVideo() {
   const ref = useRef<HTMLVideoElement>(null)
@@ -37,8 +37,8 @@ export function HeroVideo() {
         transform: `scale(${FACE_ZOOM})`,
         transformOrigin: FACE_FOCUS,
       }}
-      src="/runway.mp4"
-      poster="https://images.pexels.com/videos/3894693/pexels-photo-3894693.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
+      src="/hero-model.mp4"
+      poster="https://images.pexels.com/videos/3894704/free-video-3894704.jpg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
       autoPlay
       muted
       loop

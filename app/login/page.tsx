@@ -12,12 +12,13 @@ export default function LoginPage() {
       {/* Left — decorative */}
       <div className="hidden lg:flex lg:w-1/2 relative overflow-hidden">
         <img
-          src="https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=1000&h=1400&fit=crop&q=80"
+          src="/login-model.jpg"
           alt=""
-          className="w-full h-full object-cover"
+          className="w-full h-full object-cover object-[50%_35%]"
           aria-hidden="true"
         />
         <div className="absolute inset-0 bg-gradient-to-r from-transparent to-background" />
+        <div className="absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-background/90 to-transparent" />
         <div className="absolute bottom-12 left-10">
           <span className="font-heading text-3xl tracking-widest gold-text font-light">AGENCY SYNC</span>
           <p className="text-foreground/40 text-sm mt-2 max-w-xs">

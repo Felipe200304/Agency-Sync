@@ -8,7 +8,7 @@ export function Hero() {
         <video
           className="w-full h-full object-cover"
           src="/runway.mp4"
-          poster="https://images.pexels.com/videos/6261136/pexels-photo-6261136.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
+          poster="https://images.pexels.com/videos/8331898/pexels-photo-8331898.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
           autoPlay
           muted
           loop

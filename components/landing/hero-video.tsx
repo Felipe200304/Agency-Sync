@@ -38,7 +38,7 @@ export function HeroVideo() {
         transformOrigin: FACE_FOCUS,
       }}
       src="/hero-model.mp4"
-      poster="https://images.pexels.com/videos/3894704/free-video-3894704.jpg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
+      poster="https://images.pexels.com/videos/6782218/free-video-6782218.jpg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
       autoPlay
       muted
       loop

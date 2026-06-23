@@ -8,7 +8,18 @@ export default function LoginPage() {
   const [password, setPassword] = useState('')
 
   return (
-    <div className="min-h-screen bg-background flex">
+    <div className="min-h-screen bg-background flex relative overflow-hidden">
+      {/* Mobile — imagem de fundo atrás do formulário */}
+      <div className="lg:hidden absolute inset-0 z-0">
+        <img
+          src="/login-model.jpg"
+          alt=""
+          className="w-full h-full object-cover object-[50%_25%]"
+          aria-hidden="true"
+        />
+        <div className="absolute inset-0 bg-background/85" />
+      </div>
+
       {/* Left — decorative */}
       <div className="hidden lg:flex lg:w-1/2 relative overflow-hidden">
         <img
@@ -28,7 +39,7 @@ export default function LoginPage() {
       </div>
 
       {/* Right — form */}
-      <div className="flex-1 flex items-center justify-center px-8 py-12">
+      <div className="relative z-10 flex-1 flex items-center justify-center px-8 py-12">
         <div className="w-full max-w-md">
           <div className="lg:hidden mb-8">
             <span className="font-heading text-2xl tracking-widest gold-text font-light">AGENCY SYNC</span>

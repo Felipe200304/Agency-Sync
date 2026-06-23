@@ -4,6 +4,10 @@ import { useEffect, useRef } from 'react'
 
 /** Velocidade de reprodução do vídeo de fundo (0.5 = metade da velocidade). */
 const PLAYBACK_RATE = 0.5
+/** Zoom no rosto da modelo (1 = sem zoom). Ajuste para aproximar/afastar. */
+const FACE_ZOOM = 1.7
+/** Ponto do quadro onde está o rosto (x% y%) — usado como foco do zoom. */
+const FACE_FOCUS = '50% 24%'
 
 export function HeroVideo() {
   const ref = useRef<HTMLVideoElement>(null)
@@ -27,7 +31,12 @@ export function HeroVideo() {
   return (
     <video
       ref={ref}
-      className="w-full h-full object-cover object-[center_28%]"
+      className="w-full h-full object-cover"
+      style={{
+        objectPosition: FACE_FOCUS,
+        transform: `scale(${FACE_ZOOM})`,
+        transformOrigin: FACE_FOCUS,
+      }}
       src="/runway.mp4"
       poster="https://images.pexels.com/videos/3894693/pexels-photo-3894693.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
       autoPlay

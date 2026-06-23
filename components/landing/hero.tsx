@@ -1,20 +1,12 @@
 import Link from 'next/link'
+import { HeroVideo } from './hero-video'
 
 export function Hero() {
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
-      {/* Background Video — model walking the runway */}
+      {/* Background Video — modelo jovem, foco no rosto, movimento lento */}
       <div className="absolute inset-0">
-        <video
-          className="w-full h-full object-cover"
-          src="/runway.mp4"
-          poster="https://images.pexels.com/videos/36726516/pexels-photo-36726516.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
-          autoPlay
-          muted
-          loop
-          playsInline
-          aria-hidden="true"
-        />
+        <HeroVideo />
         <div className="absolute inset-0 bg-gradient-to-b from-background/80 via-background/60 to-background" />
         <div className="absolute inset-0 bg-gradient-to-r from-background/50 via-transparent to-background/50" />
       </div>

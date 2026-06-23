@@ -7,7 +7,7 @@ const PLAYBACK_RATE = 0.75
 /** Zoom no rosto da modelo (1 = sem zoom). Ajuste para aproximar/afastar. */
 const FACE_ZOOM = 1.1
 /** Ponto do quadro onde está o rosto (x% y%) — usado como foco do zoom. */
-const FACE_FOCUS = '50% 35%'
+const FACE_FOCUS = '62% 30%'
 
 export function HeroVideo() {
   const ref = useRef<HTMLVideoElement>(null)
@@ -38,7 +38,7 @@ export function HeroVideo() {
         transformOrigin: FACE_FOCUS,
       }}
       src="/hero-model.mp4"
-      poster="https://images.pexels.com/videos/6782218/free-video-6782218.jpg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
+      poster="https://images.pexels.com/videos/15526547/pexels-photo-15526547.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
       autoPlay
       muted
       loop

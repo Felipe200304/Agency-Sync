@@ -33,7 +33,7 @@ export default function LoginPage() {
         <div className="absolute bottom-12 left-10">
           <span className="font-heading text-3xl tracking-widest gold-text font-light">AGENCY SYNC</span>
           <p className="text-foreground/40 text-sm mt-2 max-w-xs">
-            A plataforma premium para o ecossistema da moda brasileira.
+            A plataforma para o ecossistema da moda brasileira.
           </p>
         </div>
       </div>

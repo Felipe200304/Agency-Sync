@@ -14,7 +14,7 @@ export function Hero() {
       {/* Content */}
       <div className="relative z-10 text-center max-w-5xl mx-auto px-6">
         <p className="text-xs tracking-[0.4em] text-primary uppercase mb-6 animate-fade-in">
-          Plataforma Premium para Agências de Modelos
+          Plataforma para Agências de Modelos
         </p>
 
         <h1 className="font-heading text-6xl md:text-8xl lg:text-9xl font-light text-foreground leading-none mb-8 text-balance">

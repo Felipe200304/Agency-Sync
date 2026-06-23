@@ -8,7 +8,7 @@ export function Footer() {
           <div className="max-w-xs">
             <span className="font-heading text-2xl tracking-widest gold-text font-light">AGENCY SYNC</span>
             <p className="text-foreground/40 text-sm leading-relaxed mt-4">
-              A plataforma premium que conecta agências, modelos e marcas em um único ecossistema digital.
+              A plataforma que conecta agências, modelos e marcas em um único ecossistema digital.
             </p>
           </div>
 

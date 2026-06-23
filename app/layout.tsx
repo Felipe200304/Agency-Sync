@@ -17,7 +17,7 @@ const cormorant = Cormorant_Garamond({
 
 export const metadata: Metadata = {
   title: 'Agency Sync — Plataforma para Agências de Modelos',
-  description: 'Plataforma SaaS premium conectando agências de modelos, marcas, bookers e scouts.',
+  description: 'Plataforma SaaS conectando agências de modelos, marcas, bookers e scouts.',
   generator: 'v0.app',
 }
 

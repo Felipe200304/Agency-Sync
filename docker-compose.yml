@@ -1,0 +1,33 @@
+services:
+  db:
+    image: postgres:16-alpine
+    container_name: agencysync-db
+    environment:
+      POSTGRES_DB: agencysync
+      POSTGRES_USER: agencysync
+      POSTGRES_PASSWORD: agencysync
+    ports:
+      - "5432:5432"
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U agencysync -d agencysync"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  backend:
+    build: ./backend
+    container_name: agencysync-backend
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/agencysync
+      SPRING_DATASOURCE_USERNAME: agencysync
+      SPRING_DATASOURCE_PASSWORD: agencysync
+    ports:
+      - "8080:8080"
+
+volumes:
+  db-data:

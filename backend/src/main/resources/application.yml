@@ -1,0 +1,24 @@
+spring:
+  application:
+    name: agencysync
+  datasource:
+    url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5432/agencysync}
+    username: ${SPRING_DATASOURCE_USERNAME:agencysync}
+    password: ${SPRING_DATASOURCE_PASSWORD:agencysync}
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    open-in-view: false
+    properties:
+      hibernate.format_sql: false
+  flyway:
+    enabled: true
+
+server:
+  port: 8080
+
+app:
+  jwt:
+    # Em produção, defina via variável de ambiente APP_JWT_SECRET.
+    secret: ${APP_JWT_SECRET:troque-este-segredo-de-desenvolvimento-com-32+caracteres}
+    ttl-hours: 12

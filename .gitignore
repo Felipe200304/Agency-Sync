@@ -9,7 +9,15 @@ __v0_jsx-dev-runtime.ts
 # Environment variables
 .env*.local
 
-# Common ignores
+# Node / Next (frontend)
 node_modules
 .next/
 .DS_Store
+
+# Backend (Java/Maven)
+backend/target/
+
+# IDE
+.idea/
+*.iml
+.vscode/

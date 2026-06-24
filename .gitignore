@@ -6,8 +6,10 @@ __v0_jsx-dev-runtime.ts
 .v0-trash/
 .vercel/
 
-# Environment variables
-.env*.local
+# Environment variables (mantém apenas o .env.example versionado)
+.env
+.env.*
+!.env.example
 
 # Node / Next (frontend)
 node_modules

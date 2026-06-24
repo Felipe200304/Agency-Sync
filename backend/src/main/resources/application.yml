@@ -13,12 +13,29 @@ spring:
       hibernate.format_sql: false
   flyway:
     enabled: true
+  mail:
+    host: ${SPRING_MAIL_HOST:}
+    port: ${SPRING_MAIL_PORT:587}
+    username: ${SPRING_MAIL_USERNAME:}
+    password: ${SPRING_MAIL_PASSWORD:}
+    properties:
+      mail.smtp.auth: true
+      mail.smtp.starttls.enable: true
 
 server:
-  port: 8080
+  # Railway (e outras PaaS) injetam a porta via $PORT.
+  port: ${PORT:8080}
 
 app:
+  # Origens permitidas no CORS (separadas por vírgula). Em produção, inclua a URL do frontend.
+  cors:
+    origins: ${APP_CORS_ORIGINS:http://localhost:3000}
   jwt:
     # Em produção, defina via variável de ambiente APP_JWT_SECRET.
     secret: ${APP_JWT_SECRET:troque-este-segredo-de-desenvolvimento-com-32+caracteres}
     ttl-hours: 12
+  mail:
+    # Sem SMTP configurado (enabled=false), os e-mails são apenas LOGADOS (modo dev).
+    # Defina APP_MAIL_ENABLED=true + as variáveis SPRING_MAIL_* para enviar de verdade.
+    enabled: ${APP_MAIL_ENABLED:false}
+    from: ${APP_MAIL_FROM:no-reply@agencysync.local}

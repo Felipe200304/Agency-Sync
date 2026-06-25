@@ -130,8 +130,8 @@ export default function FinanceiroPage() {
               <XAxis dataKey="month" tick={{ fontSize: 10, fill: 'oklch(0.50 0 0)' }} axisLine={false} tickLine={false} />
               <YAxis tick={{ fontSize: 10, fill: 'oklch(0.50 0 0)' }} axisLine={false} tickLine={false} tickFormatter={v => `${(v / 1000).toFixed(0)}k`} />
               <Tooltip content={<CustomTooltip />} cursor={{ fill: 'oklch(1 0 0 / 4%)' }} />
-              <Bar dataKey="receita" name="Receita" fill="oklch(0.72 0.16 150)" radius={[2, 2, 0, 0]} />
-              <Bar dataKey="comissoes" name="Comissões" fill="oklch(0.80 0.13 85)" radius={[2, 2, 0, 0]} />
+              <Bar dataKey="receita" name="Receita" fill="oklch(0.80 0.13 85)" radius={[2, 2, 0, 0]} />
+              <Bar dataKey="comissoes" name="Comissões" fill="oklch(0.70 0.15 250)" radius={[2, 2, 0, 0]} />
             </BarChart>
           </ResponsiveContainer>
         </div>
@@ -142,7 +142,7 @@ export default function FinanceiroPage() {
               <XAxis dataKey="month" tick={{ fontSize: 10, fill: 'oklch(0.50 0 0)' }} axisLine={false} tickLine={false} />
               <YAxis tick={{ fontSize: 10, fill: 'oklch(0.50 0 0)' }} axisLine={false} tickLine={false} tickFormatter={v => `${(v / 1000).toFixed(0)}k`} />
               <Tooltip content={<CustomTooltip />} />
-              <Line type="monotone" dataKey="repasses" name="Repasses" stroke="oklch(0.68 0.13 250)" strokeWidth={2} dot={{ fill: 'oklch(0.68 0.13 250)', r: 3 }} />
+              <Line type="monotone" dataKey="repasses" name="Repasses" stroke="oklch(0.72 0.14 165)" strokeWidth={2} dot={{ fill: 'oklch(0.72 0.14 165)', r: 3 }} />
             </LineChart>
           </ResponsiveContainer>
         </div>

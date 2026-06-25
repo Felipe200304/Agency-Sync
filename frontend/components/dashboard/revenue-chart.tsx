@@ -24,12 +24,12 @@ export function RevenueChart() {
         <AreaChart data={monthlyRevenue} margin={{ top: 5, right: 10, left: 0, bottom: 0 }}>
           <defs>
             <linearGradient id="colorReceita" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="5%" stopColor="oklch(0.72 0.16 150)" stopOpacity={0.35} />
-              <stop offset="95%" stopColor="oklch(0.72 0.16 150)" stopOpacity={0} />
+              <stop offset="5%" stopColor="oklch(0.80 0.13 85)" stopOpacity={0.35} />
+              <stop offset="95%" stopColor="oklch(0.80 0.13 85)" stopOpacity={0} />
             </linearGradient>
             <linearGradient id="colorRepasses" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="5%" stopColor="oklch(0.68 0.13 250)" stopOpacity={0.3} />
-              <stop offset="95%" stopColor="oklch(0.68 0.13 250)" stopOpacity={0} />
+              <stop offset="5%" stopColor="oklch(0.72 0.14 165)" stopOpacity={0.3} />
+              <stop offset="95%" stopColor="oklch(0.72 0.14 165)" stopOpacity={0} />
             </linearGradient>
           </defs>
           <CartesianGrid strokeDasharray="3 3" stroke="oklch(1 0 0 / 6%)" />
@@ -41,8 +41,8 @@ export function RevenueChart() {
             labelStyle={{ color: 'oklch(0.85 0 0)' }}
           />
           <Legend wrapperStyle={{ fontSize: '11px', color: 'oklch(0.55 0 0)' }} />
-          <Area type="monotone" dataKey="receita" name="Receita" stroke="oklch(0.72 0.16 150)" fill="url(#colorReceita)" strokeWidth={2} />
-          <Area type="monotone" dataKey="repasses" name="Repasses" stroke="oklch(0.68 0.13 250)" fill="url(#colorRepasses)" strokeWidth={2} />
+          <Area type="monotone" dataKey="receita" name="Receita" stroke="oklch(0.80 0.13 85)" fill="url(#colorReceita)" strokeWidth={2} />
+          <Area type="monotone" dataKey="repasses" name="Repasses" stroke="oklch(0.72 0.14 165)" fill="url(#colorRepasses)" strokeWidth={2} />
         </AreaChart>
       </ResponsiveContainer>
     </div>

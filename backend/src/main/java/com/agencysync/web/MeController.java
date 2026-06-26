@@ -24,6 +24,7 @@ import com.agencysync.web.dto.FinanceRecordDto;
 import com.agencysync.web.dto.MeFinanceDto;
 import com.agencysync.web.dto.MeJobDto;
 import com.agencysync.web.dto.PasswordChangeRequest;
+import com.agencysync.web.dto.StatusRequest;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -141,7 +142,7 @@ class MeController {
         return castings.findByBrandIdOrderByCreatedAtDesc(brandId).stream().map(CastingDto::from).toList();
     }
 
-    /** A marca solicita um casting — vinculado automaticamente à própria marca. */
+    /** The brand requests a casting — automatically linked to its own brand. */
     @PostMapping("/castings")
     @ResponseStatus(HttpStatus.CREATED)
     CastingDto createCasting(Principal principal, @Valid @RequestBody CastingRequest req) {
@@ -151,6 +152,34 @@ class MeController {
         Casting saved = castings.save(casting);
         notifications.newCastingToAgency(saved);
         return CastingDto.from(saved);
+    }
+
+    /** The brand approves/rejects a model — only on castings it owns. */
+    @PutMapping("/castings/{castingId}/models/{modelId}")
+    CastingDto decideModel(Principal principal, @PathVariable UUID castingId,
+                           @PathVariable UUID modelId, @Valid @RequestBody StatusRequest req) {
+        Casting casting = requireOwnCasting(principal, castingId);
+        CastingModel cm = casting.getModels().stream()
+                .filter(m -> m.getModel().getId().equals(modelId))
+                .findFirst()
+                .orElseThrow(() -> new NotFoundException("Model in casting", modelId));
+        cm.setStatus(req.status());
+        Casting saved = castings.save(casting);
+        if ("aprovado".equals(req.status())) {
+            notifications.workConfirmedToModel(saved, cm.getModel());
+        }
+        return CastingDto.from(saved);
+    }
+
+    /** Loads a casting only if it belongs to the logged-in brand (404 otherwise). */
+    private Casting requireOwnCasting(Principal principal, UUID castingId) {
+        UUID brandId = requireBrandId(principal);
+        Casting casting = castings.findById(castingId)
+                .orElseThrow(() -> new NotFoundException("Casting", castingId));
+        if (casting.getBrand() == null || !casting.getBrand().getId().equals(brandId)) {
+            throw new NotFoundException("Casting", castingId);
+        }
+        return casting;
     }
 
     // --- Finanças do modelo ---

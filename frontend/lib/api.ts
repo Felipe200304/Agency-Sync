@@ -314,6 +314,13 @@ export const api = {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(body),
     }),
+  // Brand approves/rejects a model on its own casting (ownership checked server-side).
+  decideMeCastingModel: (castingId: string, modelId: string, status: string) =>
+    request<ApiCasting>(`/me/castings/${castingId}/models/${modelId}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ status }),
+    }),
   // token opcional: usado pelos server components (SSR) que leem o cookie via next/headers.
   models: (token?: string) => request<ApiModel[]>('/models', undefined, token),
   model: (id: string, token?: string) => request<ApiModel>(`/models/${id}`, undefined, token),

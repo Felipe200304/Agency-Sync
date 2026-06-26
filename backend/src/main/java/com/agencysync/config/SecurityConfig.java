@@ -49,8 +49,10 @@ public class SecurityConfig {
                 .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                 .requestMatchers(HttpMethod.GET, "/api/invite/*").permitAll()
                 .requestMatchers(HttpMethod.POST, "/api/invite/*/accept").permitAll()
-                // somente AGENCY: financeiro e cadastros sensíveis
+                // AGENCY only: finance, casting management and sensitive writes.
+                // Brands act on their own castings through /api/me/castings/**.
                 .requestMatchers("/api/finance/**").hasRole("AGENCY")
+                .requestMatchers("/api/castings/**").hasRole("AGENCY")
                 .requestMatchers(HttpMethod.POST, "/api/models", "/api/agencies", "/api/brands").hasRole("AGENCY")
                 .requestMatchers(HttpMethod.PUT, "/api/agencies/**", "/api/brands/**").hasRole("AGENCY")
                 .requestMatchers(HttpMethod.POST, "/api/models/*/agencies", "/api/models/*/invite", "/api/brands/*/invite").hasRole("AGENCY")

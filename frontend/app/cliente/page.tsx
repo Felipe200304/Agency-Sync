@@ -56,7 +56,7 @@ export default function ClientePage() {
 
   async function decide(castingId: string, modelId: string, status: string) {
     setError(null)
-    try { await api.decideCastingModel(castingId, modelId, status); await load() }
+    try { await api.decideMeCastingModel(castingId, modelId, status); await load() }
     catch { setError('A ação falhou. Tente novamente.') }
   }
 

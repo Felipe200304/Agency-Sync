@@ -2,10 +2,11 @@ import { cookies } from 'next/headers'
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
 import { InviteButton } from '@/components/models/invite-button'
-import { ChevronLeft, Link2, ExternalLink, MapPin, Building2, Globe, Star, Home } from 'lucide-react'
+import { ModelGallery } from '@/components/models/model-gallery'
+import { ChevronLeft, Link2, ExternalLink, MapPin, Building2, Globe, Star, Home, CheckCircle2, Clock } from 'lucide-react'
 import { DashboardHeader } from '@/components/dashboard/header'
 import { api, toModel } from '@/lib/api'
-import type { ApiAgencyLink } from '@/lib/api'
+import type { ApiAgencyLink, ApiModelPhoto } from '@/lib/api'
 
 const statusLabel: Record<string, { label: string; color: string }> = {
   'disponivel': { label: 'Disponível', color: 'text-green-400 bg-green-400/10 border-green-400/20' },
@@ -32,9 +33,11 @@ export default async function ModelProfilePage({ params }: { params: Promise<{ i
 
   let model
   let links: ApiAgencyLink[] = []
+  let photos: ApiModelPhoto[] = []
   try {
     model = toModel(await api.model(id, token))
     links = await api.agencyLinks(id, token)
+    photos = await api.modelPhotos(id, token)
   } catch {
     notFound()
   }
@@ -62,16 +65,8 @@ export default async function ModelProfilePage({ params }: { params: Promise<{ i
               </div>
             </div>
 
-            {/* Thumbnail gallery */}
-            {model.photos.length > 1 && (
-              <div className="grid grid-cols-3 gap-2">
-                {model.photos.slice(0, 3).map((ph, i) => (
-                  <div key={i} className="aspect-[3/4] rounded-sm overflow-hidden">
-                    <img src={ph} alt="" className="w-full h-full object-cover" />
-                  </div>
-                ))}
-              </div>
-            )}
+            {/* Book — galeria persistida, com remoção */}
+            <ModelGallery modelId={model.id} initial={photos} />
 
             {/* Social */}
             <div className="bg-card border border-border rounded-sm p-4 space-y-2">

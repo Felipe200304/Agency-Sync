@@ -10,7 +10,7 @@ public record ModelDto(
         UUID baseAgencyId, String baseAgencyName,
         String city, String state, String country,
         Integer heightCm, Integer bust, Integer waist, Integer hips, Integer shoe,
-        String eyeColor, String hairColor, String instagram, String status) {
+        String eyeColor, String hairColor, String instagram, String status, String photoUrl) {
 
     public static ModelDto from(Model m) {
         Agency base = m.getBaseAgency();
@@ -20,6 +20,6 @@ public record ModelDto(
                 base == null ? null : base.getName(),
                 m.getCity(), m.getState(), m.getCountry(),
                 m.getHeightCm(), m.getBust(), m.getWaist(), m.getHips(), m.getShoe(),
-                m.getEyeColor(), m.getHairColor(), m.getInstagram(), m.getStatus());
+                m.getEyeColor(), m.getHairColor(), m.getInstagram(), m.getStatus(), m.getPhotoUrl());
     }
 }

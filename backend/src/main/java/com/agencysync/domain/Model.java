@@ -44,4 +44,8 @@ public class Model extends BaseEntity {
 
     private String instagram;
     private String status;
+
+    /** Foto principal como data URL (base64) já comprimida no cliente. */
+    @Column(name = "photo_url", columnDefinition = "text")
+    private String photoUrl;
 }

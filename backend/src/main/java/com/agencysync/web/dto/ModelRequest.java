@@ -10,7 +10,7 @@ public record ModelRequest(
         @NotBlank String name, String artisticName, UUID baseAgencyId,
         String city, String state, String country,
         Integer heightCm, Integer bust, Integer waist, Integer hips, Integer shoe,
-        String eyeColor, String hairColor, String instagram, String status) {
+        String eyeColor, String hairColor, String instagram, String status, String photoUrl) {
 
     public Model applyTo(Model m, Agency baseAgency) {
         m.setName(name);
@@ -28,6 +28,7 @@ public record ModelRequest(
         m.setHairColor(hairColor);
         m.setInstagram(instagram);
         m.setStatus(status == null || status.isBlank() ? "disponivel" : status);
+        m.setPhotoUrl(photoUrl == null || photoUrl.isBlank() ? null : photoUrl);
         return m;
     }
 }

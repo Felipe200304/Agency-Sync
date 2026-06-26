@@ -50,6 +50,13 @@ export interface ApiModel {
   hairColor: string | null
   instagram: string | null
   status: string
+  photoUrl: string | null
+}
+
+export interface ApiModelPhoto {
+  id: string
+  url: string
+  position: number
 }
 
 export interface ApiEvent {
@@ -232,6 +239,7 @@ export interface NewModel {
   eyeColor?: string
   hairColor?: string
   instagram?: string
+  photoUrl?: string
 }
 
 // --- Endpoints ---
@@ -276,6 +284,20 @@ export const api = {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(body),
     }),
+  // --- Galeria (book) do modelo ---
+  modelPhotos: (id: string, token?: string) =>
+    request<ApiModelPhoto[]>(`/models/${id}/photos`, undefined, token),
+  addModelPhotos: (id: string, urls: string[]) =>
+    request<ApiModelPhoto[]>(`/models/${id}/photos`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ urls }),
+    }),
+  deleteModelPhoto: (id: string, photoId: string) =>
+    fetch(`${API_BASE}/models/${id}/photos/${photoId}`, {
+      method: 'DELETE',
+      headers: { Authorization: `Bearer ${clientToken() ?? ''}` },
+    }).then(r => { if (!r.ok && r.status !== 204) throw new Error(`DELETE photo → ${r.status}`) }),
   agenda: (id: string, token?: string) => request<ApiEvent[]>(`/models/${id}/agenda`, undefined, token),
   agencyLinks: (id: string, token?: string) => request<ApiAgencyLink[]>(`/models/${id}/agencies`, undefined, token),
   agendaExportUrl: (id: string, token?: string) =>
@@ -375,8 +397,8 @@ export function toModel(m: ApiModel): Model {
     id: m.id,
     name: m.name,
     artisticName: m.artisticName ?? m.name,
-    photo: PLACEHOLDER_PHOTO,
-    photos: [PLACEHOLDER_PHOTO],
+    photo: m.photoUrl ?? PLACEHOLDER_PHOTO,
+    photos: [m.photoUrl ?? PLACEHOLDER_PHOTO],
     height: m.heightCm ?? 0,
     weight: 0,
     bust: m.bust ?? 0,

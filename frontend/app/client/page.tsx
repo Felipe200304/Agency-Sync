@@ -43,19 +43,13 @@ export default function ClientPage() {
   const [error, setError] = useState<string | null>(null)
 
   const load = useCallback(() => {
-    // [DEBUG castings] remover depois de diagnosticar o portal da marca.
-    console.log('%c[PORTAL MARCA] build NOVO ativo — chamando api.meCastings() (/me/castings)', 'color:#e0af68;font-weight:bold')
     return Promise.all([api.meCastings(), api.models()])
       .then(([cs, ms]) => {
-        console.log('%c[PORTAL MARCA] castings recebidos:', 'color:#e0af68', cs.length, cs.map(c => ({ id: c.id, brand: c.brand, brandId: c.brandId })))
         setCastings(cs)
         setAllModels(ms)
         setSelectedId(prev => prev ?? cs[0]?.id ?? null)
       })
-      .catch((e) => {
-        console.error('[PORTAL MARCA] falha ao carregar castings:', e)
-        setError('Não foi possível carregar seus castings.')
-      })
+      .catch(() => setError('Não foi possível carregar seus castings.'))
   }, [])
 
   useEffect(() => { load() }, [load])

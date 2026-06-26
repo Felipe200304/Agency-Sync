@@ -6,14 +6,14 @@ import type { ApiJob } from '@/lib/api'
 import { Calendar, MapPin, DollarSign, CheckCircle, XCircle, Clock3 } from 'lucide-react'
 
 const brandStatusLabel: Record<string, string> = {
-  enviado: 'Enviado pela agência', aprovado: 'Aprovado pela marca',
-  reprovado: 'Reprovado pela marca', pendente: 'Pendente',
+  enviado: 'Convite de casting', aprovado: 'Selecionada para o trabalho',
+  reprovado: 'Não selecionada', pendente: 'Aguardando avaliação da marca',
 }
 
 const decisionBadge: Record<string, { label: string; color: string; icon: React.ReactNode }> = {
-  pendente: { label: 'Aguardando sua resposta', color: 'text-yellow-400 bg-yellow-400/10 border-yellow-400/20', icon: <Clock3 className="w-3.5 h-3.5" /> },
-  confirmado: { label: 'Confirmado por você', color: 'text-primary bg-primary/10 border-primary/20', icon: <CheckCircle className="w-3.5 h-3.5" /> },
-  recusado: { label: 'Recusado por você', color: 'text-destructive bg-destructive/10 border-destructive/20', icon: <XCircle className="w-3.5 h-3.5" /> },
+  pendente: { label: 'Confirme sua presença', color: 'text-yellow-400 bg-yellow-400/10 border-yellow-400/20', icon: <Clock3 className="w-3.5 h-3.5" /> },
+  confirmado: { label: 'Presença confirmada', color: 'text-primary bg-primary/10 border-primary/20', icon: <CheckCircle className="w-3.5 h-3.5" /> },
+  recusado: { label: 'Você recusou', color: 'text-destructive bg-destructive/10 border-destructive/20', icon: <XCircle className="w-3.5 h-3.5" /> },
 }
 
 const fmt = (v: number | null) => (v == null ? '—' : v.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' }))
@@ -42,14 +42,14 @@ export default function TrabalhosPage() {
   return (
     <div className="max-w-3xl mx-auto p-6">
       <div className="mb-8">
-        <h1 className="font-heading text-3xl font-light">Meus Trabalhos</h1>
-        <p className="text-muted-foreground text-sm mt-0.5">Confirme ou recuse os trabalhos enviados pela agência</p>
+        <h1 className="font-heading text-3xl font-light">Meus Castings</h1>
+        <p className="text-muted-foreground text-sm mt-0.5">Confirme sua presença nos castings. A marca avalia todos e seleciona quem fica com o trabalho.</p>
       </div>
 
       {error && <p className="text-sm text-red-400 mb-4">{error}</p>}
       {loading && <p className="text-sm text-muted-foreground">Carregando…</p>}
       {!loading && jobs.length === 0 && (
-        <p className="text-sm text-muted-foreground">Nenhum trabalho enviado para você ainda.</p>
+        <p className="text-sm text-muted-foreground">Nenhum casting enviado para você ainda.</p>
       )}
 
       <div className="space-y-3">
@@ -75,7 +75,7 @@ export default function TrabalhosPage() {
               <div className="flex gap-2">
                 <button onClick={() => decide(j.castingId, 'confirmado')} disabled={j.decision === 'confirmado'}
                   className="text-xs px-3 py-1.5 rounded-sm bg-primary/10 text-primary border border-primary/20 hover:bg-primary/20 transition-all disabled:opacity-40">
-                  Confirmar
+                  Confirmar presença
                 </button>
                 <button onClick={() => decide(j.castingId, 'recusado')} disabled={j.decision === 'recusado'}
                   className="text-xs px-3 py-1.5 rounded-sm bg-destructive/10 text-destructive border border-destructive/20 hover:bg-destructive/20 transition-all disabled:opacity-40">

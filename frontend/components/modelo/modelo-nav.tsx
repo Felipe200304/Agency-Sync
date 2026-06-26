@@ -7,7 +7,7 @@ import { User, Calendar, Briefcase, DollarSign } from 'lucide-react'
 const items = [
   { href: '/modelo', label: 'Perfil', icon: User },
   { href: '/modelo/agenda', label: 'Agenda', icon: Calendar },
-  { href: '/modelo/trabalhos', label: 'Trabalhos', icon: Briefcase },
+  { href: '/modelo/trabalhos', label: 'Castings', icon: Briefcase },
   { href: '/modelo/financas', label: 'Cachês', icon: DollarSign },
 ]
 

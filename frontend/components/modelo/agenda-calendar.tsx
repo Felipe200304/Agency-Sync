@@ -20,13 +20,16 @@ function ymd(d: Date): string {
 const formatCurrency = (v: number | null) =>
   v == null ? '—' : v.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })
 
-/** Confirmado pelo modelo (dourado) vs. aprovado pela marca aguardando resposta (amarelo). */
-type JobState = 'confirmado' | 'aguardando'
-const stateOf = (j: ApiJob): JobState => (j.decision === 'confirmado' ? 'confirmado' : 'aguardando')
+/**
+ * Trabalho = a marca aprovou o modelo (selecionada para o job) → dourado.
+ * Casting = o modelo confirmou presença no teste, aguardando a marca → azul.
+ */
+type JobState = 'trabalho' | 'casting'
+const stateOf = (j: ApiJob): JobState => (j.brandStatus === 'aprovado' ? 'trabalho' : 'casting')
 
 const stateStyle: Record<JobState, { pill: string; dot: string; border: string; label: string }> = {
-  confirmado: { pill: 'bg-primary/15 text-primary', dot: 'bg-primary', border: 'border-l-primary', label: 'Confirmado' },
-  aguardando: { pill: 'bg-yellow-400/15 text-yellow-400', dot: 'bg-yellow-400', border: 'border-l-yellow-400', label: 'Aguardando sua resposta' },
+  trabalho: { pill: 'bg-primary/15 text-primary', dot: 'bg-primary', border: 'border-l-primary', label: 'Trabalho' },
+  casting: { pill: 'bg-blue-400/15 text-blue-300', dot: 'bg-blue-400', border: 'border-l-blue-400', label: 'Casting' },
 }
 
 /**
@@ -109,7 +112,7 @@ export function AgendaCalendar({ jobs }: { jobs: ApiJob[] }) {
 
       {/* Legenda */}
       <div className="flex items-center gap-4 mb-4">
-        {(['confirmado', 'aguardando'] as JobState[]).map(s => (
+        {(['trabalho', 'casting'] as JobState[]).map(s => (
           <div key={s} className="flex items-center gap-1.5">
             <span className={`w-2 h-2 rounded-full ${stateStyle[s].dot}`} />
             <span className="text-xs text-muted-foreground">{stateStyle[s].label}</span>

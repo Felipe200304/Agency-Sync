@@ -77,7 +77,7 @@ export function NewClientButton() {
       </button>
 
       {open && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70" onClick={close}>
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[oklch(0.09_0.006_85_/_0.7)] backdrop-blur-sm" onClick={close}>
           <div
             className="bg-card border border-border shadow-2xl rounded-sm w-full max-w-2xl max-h-[90vh] overflow-y-auto p-6 relative"
             onClick={e => e.stopPropagation()}

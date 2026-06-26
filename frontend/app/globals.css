@@ -53,19 +53,21 @@
 
 :root {
   color-scheme: dark;
-  --background: oklch(0.08 0 0);
+  /* Grafite quente: leve calor no matiz do ouro (85) para o fundo
+     conversar com o dourado em vez de só contrastar. */
+  --background: oklch(0.14 0.006 85);
   --foreground: oklch(0.95 0 0);
-  --card: oklch(0.11 0 0);
+  --card: oklch(0.18 0.006 85);
   --card-foreground: oklch(0.95 0 0);
-  --popover: oklch(0.12 0 0);
+  --popover: oklch(0.19 0.006 85);
   --popover-foreground: oklch(0.95 0 0);
   --primary: oklch(0.78 0.09 85);
-  --primary-foreground: oklch(0.08 0 0);
-  --secondary: oklch(0.18 0 0);
+  --primary-foreground: oklch(0.14 0.006 85);
+  --secondary: oklch(0.24 0.006 85);
   --secondary-foreground: oklch(0.95 0 0);
-  --muted: oklch(0.15 0 0);
-  --muted-foreground: oklch(0.50 0 0);
-  --accent: oklch(0.18 0 0);
+  --muted: oklch(0.22 0.004 85);
+  --muted-foreground: oklch(0.58 0.004 85);
+  --accent: oklch(0.24 0.006 85);
   --accent-foreground: oklch(0.78 0.09 85);
   --destructive: oklch(0.65 0.20 22);
   --border: oklch(1 0 0 / 8%);
@@ -77,11 +79,11 @@
   --chart-4: oklch(0.68 0.16 300); /* violeta */
   --chart-5: oklch(0.68 0.17 20);  /* rosa */
   --radius: 0.5rem;
-  --sidebar: oklch(0.09 0 0);
+  --sidebar: oklch(0.16 0.006 85);
   --sidebar-foreground: oklch(0.75 0 0);
   --sidebar-primary: oklch(0.78 0.09 85);
-  --sidebar-primary-foreground: oklch(0.08 0 0);
-  --sidebar-accent: oklch(0.14 0 0);
+  --sidebar-primary-foreground: oklch(0.14 0.006 85);
+  --sidebar-accent: oklch(0.24 0.006 85);
   --sidebar-accent-foreground: oklch(0.95 0 0);
   --sidebar-border: oklch(1 0 0 / 6%);
   --sidebar-ring: oklch(0.78 0.09 85);

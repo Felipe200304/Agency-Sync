@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
 
+// redeploy: garante front com escopo da marca (api.meCastings) em prod
 // Cada seção do app pertence a um papel. Login único → roteamento por papel.
 const SECTIONS: { prefix: string; role: string; home: string }[] = [
   { prefix: '/dashboard', role: 'AGENCY', home: '/dashboard' },

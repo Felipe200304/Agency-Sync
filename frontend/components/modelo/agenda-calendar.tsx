@@ -1,7 +1,9 @@
 'use client'
 
 import { useState } from 'react'
+import { useRouter } from 'next/navigation'
 import { ChevronLeft, ChevronRight, MapPin } from 'lucide-react'
+import { api } from '@/lib/api'
 import type { ApiJob } from '@/lib/api'
 
 const WEEKDAYS = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb']
@@ -18,14 +20,39 @@ function ymd(d: Date): string {
 const formatCurrency = (v: number | null) =>
   v == null ? '—' : v.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })
 
+/** Confirmado pelo modelo (dourado) vs. aprovado pela marca aguardando resposta (amarelo). */
+type JobState = 'confirmado' | 'aguardando'
+const stateOf = (j: ApiJob): JobState => (j.decision === 'confirmado' ? 'confirmado' : 'aguardando')
+
+const stateStyle: Record<JobState, { pill: string; dot: string; border: string; label: string }> = {
+  confirmado: { pill: 'bg-primary/15 text-primary', dot: 'bg-primary', border: 'border-l-primary', label: 'Confirmado' },
+  aguardando: { pill: 'bg-yellow-400/15 text-yellow-400', dot: 'bg-yellow-400', border: 'border-l-yellow-400', label: 'Aguardando sua resposta' },
+}
+
 /**
  * Calendário mensal da agenda do modelo. Mostra apenas os castings
  * confirmados (recebidos já filtrados) posicionados na sua data.
  */
 export function AgendaCalendar({ jobs }: { jobs: ApiJob[] }) {
+  const router = useRouter()
   const today = new Date()
   const [cursor, setCursor] = useState(new Date(today.getFullYear(), today.getMonth(), 1))
   const [selected, setSelected] = useState(ymd(today))
+  const [busy, setBusy] = useState<string | null>(null)
+  const [error, setError] = useState<string | null>(null)
+
+  async function decide(castingId: string, decision: string) {
+    setBusy(castingId)
+    setError(null)
+    try {
+      await api.meDecideJob(castingId, decision)
+      router.refresh() // re-busca no servidor; recusados saem do calendário
+    } catch {
+      setError('Não foi possível atualizar. Tente novamente.')
+    } finally {
+      setBusy(null)
+    }
+  }
 
   // Agrupa castings por data.
   const byDate = jobs.reduce<Record<string, ApiJob[]>>((acc, j) => {
@@ -73,6 +100,16 @@ export function AgendaCalendar({ jobs }: { jobs: ApiJob[] }) {
         </div>
       </div>
 
+      {/* Legenda */}
+      <div className="flex items-center gap-4 mb-4">
+        {(['confirmado', 'aguardando'] as JobState[]).map(s => (
+          <div key={s} className="flex items-center gap-1.5">
+            <span className={`w-2 h-2 rounded-full ${stateStyle[s].dot}`} />
+            <span className="text-xs text-muted-foreground">{stateStyle[s].label}</span>
+          </div>
+        ))}
+      </div>
+
       {/* Dias da semana */}
       <div className="grid grid-cols-7 gap-1 mb-1">
         {WEEKDAYS.map(w => (
@@ -101,7 +138,7 @@ export function AgendaCalendar({ jobs }: { jobs: ApiJob[] }) {
               </span>
               <div className="mt-0.5 space-y-0.5 overflow-hidden">
                 {dayJobs.slice(0, 2).map(j => (
-                  <span key={j.castingId} className="block truncate text-[9px] leading-tight px-1 py-0.5 rounded-sm bg-primary/15 text-primary">
+                  <span key={j.castingId} className={`block truncate text-[9px] leading-tight px-1 py-0.5 rounded-sm ${stateStyle[stateOf(j)].pill}`}>
                     {j.title}
                   </span>
                 ))}
@@ -123,21 +160,44 @@ export function AgendaCalendar({ jobs }: { jobs: ApiJob[] }) {
           <p className="text-sm text-muted-foreground">Nenhum casting confirmado neste dia.</p>
         ) : (
           <div className="space-y-2">
-            {selectedJobs.map(j => (
-              <div key={j.castingId} className="rounded-sm bg-muted/30 border border-border/50 border-l-2 border-l-primary p-3">
-                <div className="flex items-center justify-between gap-2">
-                  <span className="text-xs text-primary font-medium tracking-wider uppercase">{j.brand ?? 'Casting'}</span>
-                  <span className="text-xs text-muted-foreground">{formatCurrency(j.cachet)}</span>
-                </div>
-                <h3 className="text-sm font-medium mt-0.5">{j.title}</h3>
-                {j.location && (
-                  <div className="flex items-center gap-1 text-xs text-muted-foreground mt-1">
-                    <MapPin className="w-3 h-3" />
-                    {j.location}
+            {selectedJobs.map(j => {
+              const st = stateStyle[stateOf(j)]
+              return (
+                <div key={j.castingId} className={`rounded-sm bg-muted/30 border border-border/50 border-l-2 ${st.border} p-3`}>
+                  <div className="flex items-center justify-between gap-2">
+                    <span className="text-xs text-primary font-medium tracking-wider uppercase">{j.brand ?? 'Casting'}</span>
+                    <span className="text-xs text-muted-foreground">{formatCurrency(j.cachet)}</span>
                   </div>
-                )}
-              </div>
-            ))}
+                  <h3 className="text-sm font-medium mt-0.5">{j.title}</h3>
+                  <div className="flex items-center gap-3 mt-1.5 flex-wrap">
+                    <span className={`text-[10px] px-1.5 py-0.5 rounded-sm ${st.pill}`}>{st.label}</span>
+                    {j.location && (
+                      <span className="flex items-center gap-1 text-xs text-muted-foreground">
+                        <MapPin className="w-3 h-3" />
+                        {j.location}
+                      </span>
+                    )}
+                  </div>
+                  <div className="flex gap-2 mt-3">
+                    <button
+                      onClick={() => decide(j.castingId, 'confirmado')}
+                      disabled={busy === j.castingId || j.decision === 'confirmado'}
+                      className="text-xs px-3 py-1.5 rounded-sm bg-primary/10 text-primary border border-primary/20 hover:bg-primary/20 transition-all disabled:opacity-40"
+                    >
+                      Confirmar
+                    </button>
+                    <button
+                      onClick={() => decide(j.castingId, 'recusado')}
+                      disabled={busy === j.castingId}
+                      className="text-xs px-3 py-1.5 rounded-sm bg-destructive/10 text-destructive border border-destructive/20 hover:bg-destructive/20 transition-all disabled:opacity-40"
+                    >
+                      Recusar
+                    </button>
+                  </div>
+                </div>
+              )
+            })}
+            {error && <p className="text-xs text-red-400">{error}</p>}
           </div>
         )}
       </div>

@@ -51,6 +51,7 @@ export default function CastingDetailPage() {
   const [allModels, setAllModels] = useState<ApiModel[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
+  const [pick, setPick] = useState('')
 
   const load = useCallback(() => {
     return Promise.all([api.casting(id), api.models()])
@@ -146,7 +147,35 @@ export default function CastingDetailPage() {
             </div>
 
             {casting.models.length === 0 ? (
-              <p className="text-sm text-muted-foreground text-center py-8">Nenhuma modelo adicionada ainda</p>
+              <div className="text-center py-8 space-y-4">
+                <div>
+                  <Users className="w-8 h-8 text-muted-foreground/40 mx-auto mb-2" />
+                  <p className="text-sm text-muted-foreground">Nenhuma modelo adicionada ainda</p>
+                </div>
+                {availableModels.length > 0 ? (
+                  <div className="flex items-center justify-center gap-2">
+                    <select
+                      value={pick}
+                      onChange={e => setPick(e.target.value)}
+                      className="bg-muted/40 border border-border rounded-sm px-3 py-2 text-sm text-foreground focus:outline-none focus:border-primary/60 transition-colors max-w-[220px]"
+                    >
+                      <option value="">Selecione um modelo…</option>
+                      {availableModels.map(m => (
+                        <option key={m.id} value={m.id}>{m.artisticName}</option>
+                      ))}
+                    </select>
+                    <button
+                      disabled={!pick}
+                      onClick={() => act(() => api.addCastingModels(casting.id, [pick])).then(() => setPick(''))}
+                      className="px-4 py-2 rounded-sm bg-primary text-primary-foreground text-sm font-medium hover:bg-primary/90 transition-all disabled:opacity-50"
+                    >
+                      Escalar modelo
+                    </button>
+                  </div>
+                ) : (
+                  <p className="text-xs text-muted-foreground">Cadastre modelos para poder escalá-los neste casting.</p>
+                )}
+              </div>
             ) : (
               <div className="space-y-3">
                 {casting.models.map(cm => (

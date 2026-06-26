@@ -2,7 +2,7 @@ import { cookies } from 'next/headers'
 import { api } from '@/lib/api'
 import type { ApiJob } from '@/lib/api'
 import { Download } from 'lucide-react'
-import { AgendaCalendar } from '@/components/modelo/agenda-calendar'
+import { AgendaCalendar } from '@/components/model/agenda-calendar'
 
 export const dynamic = 'force-dynamic'
 

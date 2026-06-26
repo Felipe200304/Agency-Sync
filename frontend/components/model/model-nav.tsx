@@ -5,14 +5,14 @@ import { usePathname } from 'next/navigation'
 import { User, Calendar, Briefcase, DollarSign } from 'lucide-react'
 
 const items = [
-  { href: '/modelo', label: 'Perfil', icon: User },
-  { href: '/modelo/agenda', label: 'Agenda', icon: Calendar },
-  { href: '/modelo/trabalhos', label: 'Castings', icon: Briefcase },
-  { href: '/modelo/financas', label: 'Cachês', icon: DollarSign },
+  { href: '/model', label: 'Perfil', icon: User },
+  { href: '/model/agenda', label: 'Agenda', icon: Calendar },
+  { href: '/model/castings', label: 'Castings', icon: Briefcase },
+  { href: '/model/finances', label: 'Cachês', icon: DollarSign },
 ]
 
 function isActive(pathname: string, href: string) {
-  return href === '/modelo' ? pathname === '/modelo' : pathname.startsWith(href)
+  return href === '/model' ? pathname === '/model' : pathname.startsWith(href)
 }
 
 /** Navegação horizontal no topo (desktop). */

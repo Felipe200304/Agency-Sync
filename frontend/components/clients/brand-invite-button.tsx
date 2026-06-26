@@ -15,7 +15,7 @@ export function BrandInviteButton({ brandId }: { brandId: string }) {
     setState('loading')
     try {
       const { token } = await api.createBrandInvite(brandId)
-      const link = `${window.location.origin}/convite/${token}`
+      const link = `${window.location.origin}/invite/${token}`
       await navigator.clipboard.writeText(link)
       setState('copied')
       setTimeout(() => setState('idle'), 2500)

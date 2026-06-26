@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import { LogoutButton } from '@/components/auth/logout-button'
-import { ModeloTopNav, ModeloBottomNav } from '@/components/modelo/modelo-nav'
+import { ModeloTopNav, ModeloBottomNav } from '@/components/model/model-nav'
 
 export default function ModeloLayout({ children }: { children: React.ReactNode }) {
   return (

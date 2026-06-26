@@ -10,9 +10,9 @@ export default function ClienteLayout({ children }: { children: React.ReactNode 
         </Link>
         <nav className="flex items-center gap-6">
           {[
-            { href: '/cliente', label: 'Meu Painel' },
-            { href: '/cliente/castings', label: 'Meus Castings' },
-            { href: '/cliente/novo-casting', label: 'Solicitar Casting' },
+            { href: '/client', label: 'Meu Painel' },
+            { href: '/client/castings', label: 'Meus Castings' },
+            { href: '/client/new-casting', label: 'Solicitar Casting' },
           ].map(({ href, label }) => (
             <Link key={href} href={href} className="text-sm text-muted-foreground hover:text-foreground transition-colors">
               {label}

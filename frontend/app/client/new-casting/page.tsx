@@ -49,7 +49,7 @@ export default function NovoCastingClientePage() {
         responsible: form.responsible || undefined,
         email: form.email || undefined,
       })
-      router.push('/cliente')
+      router.push('/client')
     } catch {
       setError('Não foi possível enviar a solicitação. Verifique se o backend está rodando.')
       setSaving(false)
@@ -59,7 +59,7 @@ export default function NovoCastingClientePage() {
   return (
     <div className="max-w-3xl mx-auto p-6">
       <div className="flex items-center gap-4 mb-8">
-        <Link href="/cliente" className="flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors">
+        <Link href="/client" className="flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors">
           <ArrowLeft className="w-4 h-4" />
           Voltar
         </Link>
@@ -146,7 +146,7 @@ export default function NovoCastingClientePage() {
 
         {error && <p className="text-sm text-red-400 text-right">{error}</p>}
         <div className="flex justify-end gap-3">
-          <Link href="/cliente" className="px-6 py-2.5 rounded-sm border border-border text-sm text-muted-foreground hover:text-foreground hover:border-foreground/30 transition-all">
+          <Link href="/client" className="px-6 py-2.5 rounded-sm border border-border text-sm text-muted-foreground hover:text-foreground hover:border-foreground/30 transition-all">
             Cancelar
           </Link>
           <button onClick={handleSubmit} disabled={saving}

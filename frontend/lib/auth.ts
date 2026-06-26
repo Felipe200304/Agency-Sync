@@ -3,8 +3,8 @@ import type { Role } from './api'
 /** Página inicial de cada perfil após o login (login único, roteamento por papel). */
 export const HOME_BY_ROLE: Record<Role, string> = {
   AGENCY: '/dashboard',
-  MODEL: '/modelo',
-  BRAND: '/cliente',
+  MODEL: '/model',
+  BRAND: '/client',
 }
 
 const MAX_AGE = 12 * 60 * 60 // 12h, alinhado ao TTL do JWT

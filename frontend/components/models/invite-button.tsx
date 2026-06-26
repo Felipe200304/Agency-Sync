@@ -16,7 +16,7 @@ export function InviteButton({ modelId }: { modelId: string }) {
     setError(null)
     try {
       const { token } = await api.createInvite(modelId)
-      setLink(`${window.location.origin}/convite/${token}`)
+      setLink(`${window.location.origin}/invite/${token}`)
     } catch {
       setError('Não foi possível gerar o convite.')
     } finally {

@@ -16,8 +16,8 @@ const navItems = [
   { href: '/dashboard/calendar', label: 'Calendário', icon: Calendar },
   { href: '/dashboard/clients', label: 'Clientes', icon: Building2 },
   { href: '/dashboard/staff', label: 'Equipe', icon: UserCheck },
-  { href: '/dashboard/financeiro', label: 'Financeiro', icon: DollarSign },
-  { href: '/dashboard/configuracoes', label: 'Configurações', icon: Settings },
+  { href: '/dashboard/finances', label: 'Financeiro', icon: DollarSign },
+  { href: '/dashboard/settings', label: 'Configurações', icon: Settings },
 ]
 
 export function Sidebar() {

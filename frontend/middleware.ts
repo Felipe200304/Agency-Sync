@@ -4,8 +4,8 @@ import type { NextRequest } from 'next/server'
 // Cada seção do app pertence a um papel. Login único → roteamento por papel.
 const SECTIONS: { prefix: string; role: string; home: string }[] = [
   { prefix: '/dashboard', role: 'AGENCY', home: '/dashboard' },
-  { prefix: '/modelo', role: 'MODEL', home: '/modelo' },
-  { prefix: '/cliente', role: 'BRAND', home: '/cliente' },
+  { prefix: '/model', role: 'MODEL', home: '/model' },
+  { prefix: '/client', role: 'BRAND', home: '/client' },
 ]
 
 export function middleware(req: NextRequest) {
@@ -35,5 +35,5 @@ export function middleware(req: NextRequest) {
 }
 
 export const config = {
-  matcher: ['/dashboard/:path*', '/modelo/:path*', '/cliente/:path*'],
+  matcher: ['/dashboard/:path*', '/model/:path*', '/client/:path*'],
 }

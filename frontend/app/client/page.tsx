@@ -114,7 +114,7 @@ export default function ClientePage() {
             {castings.length === 0 ? (
               <div className="text-center py-16 bg-card border border-dashed border-border rounded-sm">
                 <p className="text-sm text-muted-foreground">Nenhum casting ainda.</p>
-                <Link href="/cliente/novo-casting" className="mt-3 inline-block text-xs text-primary hover:underline">Solicitar casting</Link>
+                <Link href="/client/new-casting" className="mt-3 inline-block text-xs text-primary hover:underline">Solicitar casting</Link>
               </div>
             ) : (
               castings.map(c => {
@@ -234,7 +234,7 @@ export default function ClientePage() {
             <p className="text-sm text-muted-foreground mb-6">
               Preencha os detalhes da sua campanha e nossa equipe entrará em contato em até 24h.
             </p>
-            <Link href="/cliente/novo-casting"
+            <Link href="/client/new-casting"
               className="inline-flex items-center gap-2 px-6 py-2.5 bg-primary text-primary-foreground rounded-sm text-sm hover:opacity-90 transition-all tracking-wide">
               <Plus className="w-4 h-4" />
               Solicitar Casting

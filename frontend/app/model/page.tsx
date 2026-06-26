@@ -20,7 +20,7 @@ const modelStatus: Record<string, { label: string; color: string }> = {
 const fmt = (v: number, currency = 'BRL') => v.toLocaleString('pt-BR', { style: 'currency', currency })
 const fmtDate = (d: string | null) => (d ? new Date(d + 'T12:00:00').toLocaleDateString('pt-BR') : '—')
 
-export default async function ModeloPage() {
+export default async function ModelPage() {
   const token = (await cookies()).get('token')?.value
   let model: ApiModel | null = null
   let finance: ApiMeFinance | null = null

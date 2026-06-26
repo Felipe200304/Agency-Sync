@@ -1,7 +1,7 @@
 import Link from 'next/link'
 import { LogoutButton } from '@/components/auth/logout-button'
 
-export default function ClienteLayout({ children }: { children: React.ReactNode }) {
+export default function ClientLayout({ children }: { children: React.ReactNode }) {
   return (
     <div className="min-h-screen bg-background">
       <header className="h-14 border-b border-border flex items-center justify-between px-6">

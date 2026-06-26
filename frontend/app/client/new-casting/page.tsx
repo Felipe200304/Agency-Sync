@@ -20,7 +20,7 @@ const initial: Form = {
   desiredProfile: '', description: '', responsible: '', email: '',
 }
 
-export default function NovoCastingClientePage() {
+export default function NewCastingClientPage() {
   const router = useRouter()
   const [form, setForm] = useState<Form>(initial)
   const [saving, setSaving] = useState(false)

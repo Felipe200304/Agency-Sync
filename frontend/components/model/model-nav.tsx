@@ -16,7 +16,7 @@ function isActive(pathname: string, href: string) {
 }
 
 /** Navegação horizontal no topo (desktop). */
-export function ModeloTopNav() {
+export function ModelTopNav() {
   const pathname = usePathname()
   return (
     <nav className="hidden md:flex items-center gap-6">
@@ -36,7 +36,7 @@ export function ModeloTopNav() {
 }
 
 /** Tab bar fixa no rodapé (mobile) — padrão de app nativo. */
-export function ModeloBottomNav() {
+export function ModelBottomNav() {
   const pathname = usePathname()
   return (
     <nav className="md:hidden fixed bottom-0 inset-x-0 z-40 bg-card/95 backdrop-blur border-t border-border pb-[env(safe-area-inset-bottom)]">

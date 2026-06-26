@@ -6,7 +6,7 @@ import { AgendaCalendar } from '@/components/model/agenda-calendar'
 
 export const dynamic = 'force-dynamic'
 
-export default async function ModeloAgendaPage() {
+export default async function ModelAgendaPage() {
   const token = (await cookies()).get('token')?.value
   let modelId: string | undefined
   let jobs: ApiJob[] = []

@@ -34,7 +34,7 @@ const fmtDate = (d: string | null) => (d ? new Date(d + 'T12:00:00').toLocaleDat
 const tabs = ['Meus Castings', 'Solicitação', 'Explorar Modelos'] as const
 type Tab = typeof tabs[number]
 
-export default function ClientePage() {
+export default function ClientPage() {
   const [tab, setTab] = useState<Tab>('Meus Castings')
   const [castings, setCastings] = useState<ApiCasting[]>([])
   const [allModels, setAllModels] = useState<ApiModel[]>([])

@@ -5,7 +5,7 @@ import { useParams, useRouter } from 'next/navigation'
 import { api } from '@/lib/api'
 import { setSession, HOME_BY_ROLE } from '@/lib/auth'
 
-export default function ConvitePage() {
+export default function InvitePage() {
   const router = useRouter()
   const { token } = useParams<{ token: string }>()
   const [inviteName, setInviteName] = useState<string | null>(null)

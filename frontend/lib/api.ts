@@ -18,7 +18,11 @@ async function request<T>(path: string, init?: RequestInit, token?: string): Pro
     ...(init?.headers as Record<string, string> | undefined),
     ...(auth ? { Authorization: `Bearer ${auth}` } : {}),
   }
+  const method = init?.method ?? 'GET'
+  // [DEBUG castings] remover depois de diagnosticar o portal da marca.
+  console.log(`%c[API] ${method} ${API_BASE}${path}`, 'color:#7aa2f7', { hasToken: !!auth })
   const res = await fetch(`${API_BASE}${path}`, { cache: 'no-store', ...init, headers })
+  console.log(`%c[API] ${method} ${path} → ${res.status}`, res.ok ? 'color:#9ece6a' : 'color:#f7768e')
 
   // Sessão expirada/ausente no browser → volta ao login.
   if (res.status === 401 && typeof window !== 'undefined' && path !== '/auth/login') {

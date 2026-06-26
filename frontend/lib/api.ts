@@ -211,6 +211,16 @@ export interface ApiBrand {
   status: string
 }
 
+export interface NewBrand {
+  name: string
+  responsible?: string
+  email?: string
+  phone?: string
+  city?: string
+  state?: string
+  status?: string
+}
+
 export type Role = 'AGENCY' | 'MODEL' | 'BRAND'
 
 export interface AuthUser {
@@ -303,6 +313,12 @@ export const api = {
   agendaExportUrl: (id: string, token?: string) =>
     `${API_BASE}/models/${id}/agenda/export${token ? `?token=${encodeURIComponent(token)}` : ''}`,
   brands: (token?: string) => request<ApiBrand[]>('/brands', undefined, token),
+  createBrand: (body: NewBrand) =>
+    request<ApiBrand>('/brands', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(body),
+    }),
 
   castings: (token?: string) => request<ApiCasting[]>('/castings', undefined, token),
   casting: (id: string, token?: string) => request<ApiCasting>(`/castings/${id}`, undefined, token),

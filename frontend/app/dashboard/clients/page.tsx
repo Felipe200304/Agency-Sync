@@ -1,7 +1,8 @@
 import { cookies } from 'next/headers'
 import { api } from '@/lib/api'
 import type { ApiBrand } from '@/lib/api'
-import { Mail, Phone, MapPin, Plus, Building2 } from 'lucide-react'
+import { Mail, Phone, MapPin, Building2 } from 'lucide-react'
+import { NewClientButton } from '@/components/clients/new-client-button'
 
 export const dynamic = 'force-dynamic'
 
@@ -24,10 +25,7 @@ export default async function ClientsPage() {
           <h1 className="font-heading text-3xl font-light">Clientes</h1>
           <p className="text-muted-foreground text-sm mt-0.5">{active} clientes ativos</p>
         </div>
-        <button className="flex items-center gap-2 px-4 py-2 bg-primary text-primary-foreground rounded-sm text-sm hover:bg-primary/90 transition-all">
-          <Plus className="w-4 h-4" />
-          Novo Cliente
-        </button>
+        <NewClientButton />
       </div>
 
       {error && <p className="text-sm text-red-400 mb-6">{error}</p>}

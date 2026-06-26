@@ -7,6 +7,7 @@ import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
 
+/** Convite de onboarding. Referencia um modelo OU uma marca (um dos dois). */
 @Entity
 @Table(name = "invite")
 @Getter
@@ -15,9 +16,13 @@ public class Invite extends BaseEntity {
 
     private String token;
 
-    @ManyToOne(optional = false)
+    @ManyToOne
     @JoinColumn(name = "model_id")
     private Model model;
+
+    @ManyToOne
+    @JoinColumn(name = "brand_id")
+    private Brand brand;
 
     private boolean used;
 }

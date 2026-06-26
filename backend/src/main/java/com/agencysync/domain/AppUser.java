@@ -24,10 +24,13 @@ public class AppUser extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private UserRole role;
 
-    /** Vínculo de conta: agência OU modelo, conforme o papel. */
+    /** Vínculo de conta: agência, modelo OU marca, conforme o papel. */
     @Column(name = "agency_id")
     private UUID agencyId;
 
     @Column(name = "model_id")
     private UUID modelId;
+
+    @Column(name = "brand_id")
+    private UUID brandId;
 }

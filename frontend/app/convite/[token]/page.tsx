@@ -3,12 +3,12 @@
 import { useEffect, useState } from 'react'
 import { useParams, useRouter } from 'next/navigation'
 import { api } from '@/lib/api'
-import { setSession } from '@/lib/auth'
+import { setSession, HOME_BY_ROLE } from '@/lib/auth'
 
 export default function ConvitePage() {
   const router = useRouter()
   const { token } = useParams<{ token: string }>()
-  const [modelName, setModelName] = useState<string | null>(null)
+  const [inviteName, setInviteName] = useState<string | null>(null)
   const [used, setUsed] = useState(false)
   const [status, setStatus] = useState<'loading' | 'ok' | 'invalid'>('loading')
 
@@ -19,7 +19,7 @@ export default function ConvitePage() {
 
   useEffect(() => {
     api.inviteInfo(token)
-      .then(info => { setModelName(info.modelName); setUsed(info.used); setStatus('ok') })
+      .then(info => { setInviteName(info.name); setUsed(info.used); setStatus('ok') })
       .catch(() => setStatus('invalid'))
   }, [token])
 
@@ -30,7 +30,7 @@ export default function ConvitePage() {
     try {
       const { token: jwt, user } = await api.acceptInvite(token, email.trim(), password)
       setSession(jwt, user.role)
-      router.push('/modelo')
+      router.push(HOME_BY_ROLE[user.role])
     } catch {
       setError('Não foi possível criar a conta. Verifique os dados (senha mínima de 6 caracteres) ou o link.')
       setSaving(false)
@@ -56,7 +56,7 @@ export default function ConvitePage() {
           <>
             <h1 className="font-heading text-3xl font-light text-foreground mt-8 mb-1">Crie seu acesso</h1>
             <p className="text-foreground/40 text-sm mb-8">
-              Convite para <span className="text-foreground/70">{modelName}</span> — defina seu login.
+              Convite para <span className="text-foreground/70">{inviteName}</span> — defina seu login.
             </p>
 
             <form onSubmit={submit} className="space-y-4">

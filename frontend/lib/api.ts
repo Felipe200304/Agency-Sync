@@ -241,6 +241,14 @@ export interface AuthUser {
   role: Role
   agencyId: string | null
   modelId: string | null
+  brandId: string | null
+}
+
+export interface InviteInfo {
+  token: string
+  name: string
+  role: Role
+  used: boolean
 }
 
 export interface AuthResponse {
@@ -374,11 +382,13 @@ export const api = {
       body: JSON.stringify({ currentPassword, newPassword }),
     }).then(r => { if (!r.ok && r.status !== 204) throw new Error(`senha → ${r.status}`) }),
 
-  // --- Convite (onboarding do modelo) ---
+  // --- Convite (onboarding do modelo ou da marca) ---
   createInvite: (modelId: string) =>
-    request<{ token: string; modelName: string; used: boolean }>(`/models/${modelId}/invite`, { method: 'POST' }),
+    request<InviteInfo>(`/models/${modelId}/invite`, { method: 'POST' }),
+  createBrandInvite: (brandId: string) =>
+    request<InviteInfo>(`/brands/${brandId}/invite`, { method: 'POST' }),
   inviteInfo: (token: string) =>
-    request<{ token: string; modelName: string; used: boolean }>(`/invite/${token}`),
+    request<InviteInfo>(`/invite/${token}`),
   acceptInvite: (token: string, email: string, password: string) =>
     request<AuthResponse>(`/invite/${token}/accept`, {
       method: 'POST',

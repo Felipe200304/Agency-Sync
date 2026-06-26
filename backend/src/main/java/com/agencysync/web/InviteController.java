@@ -1,10 +1,12 @@
 package com.agencysync.web;
 
 import com.agencysync.domain.AppUser;
+import com.agencysync.domain.Brand;
 import com.agencysync.domain.Invite;
 import com.agencysync.domain.Model;
 import com.agencysync.domain.UserRole;
 import com.agencysync.repo.AppUserRepo;
+import com.agencysync.repo.BrandRepo;
 import com.agencysync.repo.InviteRepo;
 import com.agencysync.repo.ModelRepo;
 import com.agencysync.service.JwtService;
@@ -29,14 +31,16 @@ import java.util.UUID;
 class InviteController {
 
     private final ModelRepo models;
+    private final BrandRepo brands;
     private final InviteRepo invites;
     private final AppUserRepo users;
     private final PasswordEncoder encoder;
     private final JwtService jwt;
 
-    InviteController(ModelRepo models, InviteRepo invites, AppUserRepo users,
+    InviteController(ModelRepo models, BrandRepo brands, InviteRepo invites, AppUserRepo users,
                      PasswordEncoder encoder, JwtService jwt) {
         this.models = models;
+        this.brands = brands;
         this.invites = invites;
         this.users = users;
         this.encoder = encoder;
@@ -48,11 +52,26 @@ class InviteController {
     @ResponseStatus(HttpStatus.CREATED)
     InviteDto create(@PathVariable UUID modelId) {
         Model model = models.findById(modelId).orElseThrow(() -> new NotFoundException("Modelo", modelId));
-        Invite inv = new Invite();
+        Invite inv = newInvite();
         inv.setModel(model);
+        return InviteDto.from(invites.save(inv));
+    }
+
+    /** Agência gera um convite para a marca criar o próprio login. */
+    @PostMapping("/api/brands/{brandId}/invite")
+    @ResponseStatus(HttpStatus.CREATED)
+    InviteDto createForBrand(@PathVariable UUID brandId) {
+        Brand brand = brands.findById(brandId).orElseThrow(() -> new NotFoundException("Marca", brandId));
+        Invite inv = newInvite();
+        inv.setBrand(brand);
+        return InviteDto.from(invites.save(inv));
+    }
+
+    private Invite newInvite() {
+        Invite inv = new Invite();
         inv.setToken(UUID.randomUUID().toString().replace("-", ""));
         inv.setUsed(false);
-        return InviteDto.from(invites.save(inv));
+        return inv;
     }
 
     /** Público: dados do convite para a tela de cadastro. */
@@ -75,8 +94,13 @@ class InviteController {
         AppUser user = new AppUser();
         user.setEmail(email);
         user.setPasswordHash(encoder.encode(req.password()));
-        user.setRole(UserRole.MODEL);
-        user.setModelId(inv.getModel().getId());
+        if (inv.getBrand() != null) {
+            user.setRole(UserRole.BRAND);
+            user.setBrandId(inv.getBrand().getId());
+        } else {
+            user.setRole(UserRole.MODEL);
+            user.setModelId(inv.getModel().getId());
+        }
         users.save(user);
 
         inv.setUsed(true);

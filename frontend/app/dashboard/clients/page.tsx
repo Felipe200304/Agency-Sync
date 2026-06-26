@@ -3,6 +3,7 @@ import { api } from '@/lib/api'
 import type { ApiBrand } from '@/lib/api'
 import { Mail, Phone, MapPin, Building2 } from 'lucide-react'
 import { NewClientButton } from '@/components/clients/new-client-button'
+import { BrandInviteButton } from '@/components/clients/brand-invite-button'
 
 export const dynamic = 'force-dynamic'
 
@@ -49,14 +50,14 @@ export default async function ClientsPage() {
         <table className="w-full">
           <thead>
             <tr className="border-b border-border">
-              {['Cliente', 'Responsavel', 'Contato', 'Cidade', 'Status'].map(h => (
+              {['Cliente', 'Responsavel', 'Contato', 'Cidade', 'Status', 'Acesso'].map(h => (
                 <th key={h} className="text-left px-5 py-3 text-xs text-muted-foreground tracking-wider uppercase">{h}</th>
               ))}
             </tr>
           </thead>
           <tbody>
             {brands.length === 0 && !error && (
-              <tr><td colSpan={5} className="px-5 py-8 text-center text-sm text-muted-foreground">Nenhum cliente cadastrado.</td></tr>
+              <tr><td colSpan={6} className="px-5 py-8 text-center text-sm text-muted-foreground">Nenhum cliente cadastrado.</td></tr>
             )}
             {brands.map((b, i) => (
               <tr key={b.id} className={`border-b border-border/30 hover:bg-muted/30 transition-colors ${i % 2 === 0 ? '' : 'bg-muted/10'}`}>
@@ -101,6 +102,9 @@ export default async function ClientsPage() {
                   }`}>
                     {b.status === 'ativo' ? 'Ativo' : 'Inativo'}
                   </span>
+                </td>
+                <td className="px-5 py-4">
+                  <BrandInviteButton brandId={b.id} />
                 </td>
               </tr>
             ))}

@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { ChevronLeft, ChevronRight, MapPin } from 'lucide-react'
+import { ChevronLeft, ChevronRight, MapPin, X } from 'lucide-react'
 import { api } from '@/lib/api'
 import type { ApiJob } from '@/lib/api'
 
@@ -38,8 +38,15 @@ export function AgendaCalendar({ jobs }: { jobs: ApiJob[] }) {
   const today = new Date()
   const [cursor, setCursor] = useState(new Date(today.getFullYear(), today.getMonth(), 1))
   const [selected, setSelected] = useState(ymd(today))
+  const [modalOpen, setModalOpen] = useState(false)
   const [busy, setBusy] = useState<string | null>(null)
   const [error, setError] = useState<string | null>(null)
+
+  function openDay(dateStr: string) {
+    setSelected(dateStr)
+    setError(null)
+    setModalOpen(true)
+  }
 
   async function decide(castingId: string, decision: string) {
     setBusy(castingId)
@@ -128,7 +135,7 @@ export function AgendaCalendar({ jobs }: { jobs: ApiJob[] }) {
           return (
             <button
               key={dateStr}
-              onClick={() => setSelected(dateStr)}
+              onClick={() => openDay(dateStr)}
               className={`aspect-square rounded-sm p-1 flex flex-col items-stretch text-left border transition-all ${
                 isSelected ? 'border-primary/60 bg-primary/5' : 'border-transparent hover:border-border'
               }`}
@@ -151,56 +158,76 @@ export function AgendaCalendar({ jobs }: { jobs: ApiJob[] }) {
         })}
       </div>
 
-      {/* Detalhe do dia selecionado */}
-      <div className="mt-5 border-t border-border pt-4">
-        <p className="text-xs tracking-wider uppercase text-muted-foreground mb-3">
-          {new Date(selected + 'T12:00:00').toLocaleDateString('pt-BR', { weekday: 'long', day: 'numeric', month: 'long' })}
-        </p>
-        {selectedJobs.length === 0 ? (
-          <p className="text-sm text-muted-foreground">Nenhum casting confirmado neste dia.</p>
-        ) : (
-          <div className="space-y-2">
-            {selectedJobs.map(j => {
-              const st = stateStyle[stateOf(j)]
-              return (
-                <div key={j.castingId} className={`rounded-sm bg-muted/30 border border-border/50 border-l-2 ${st.border} p-3`}>
-                  <div className="flex items-center justify-between gap-2">
-                    <span className="text-xs text-primary font-medium tracking-wider uppercase">{j.brand ?? 'Casting'}</span>
-                    <span className="text-xs text-muted-foreground">{formatCurrency(j.cachet)}</span>
-                  </div>
-                  <h3 className="text-sm font-medium mt-0.5">{j.title}</h3>
-                  <div className="flex items-center gap-3 mt-1.5 flex-wrap">
-                    <span className={`text-[10px] px-1.5 py-0.5 rounded-sm ${st.pill}`}>{st.label}</span>
-                    {j.location && (
-                      <span className="flex items-center gap-1 text-xs text-muted-foreground">
-                        <MapPin className="w-3 h-3" />
-                        {j.location}
-                      </span>
-                    )}
-                  </div>
-                  <div className="flex gap-2 mt-3">
-                    <button
-                      onClick={() => decide(j.castingId, 'confirmado')}
-                      disabled={busy === j.castingId || j.decision === 'confirmado'}
-                      className="text-xs px-3 py-1.5 rounded-sm bg-primary/10 text-primary border border-primary/20 hover:bg-primary/20 transition-all disabled:opacity-40"
-                    >
-                      Confirmar
-                    </button>
-                    <button
-                      onClick={() => decide(j.castingId, 'recusado')}
-                      disabled={busy === j.castingId}
-                      className="text-xs px-3 py-1.5 rounded-sm bg-destructive/10 text-destructive border border-destructive/20 hover:bg-destructive/20 transition-all disabled:opacity-40"
-                    >
-                      Recusar
-                    </button>
-                  </div>
-                </div>
-              )
-            })}
-            {error && <p className="text-xs text-red-400">{error}</p>}
+      {/* Modal do dia */}
+      {modalOpen && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[oklch(0.09_0.006_85_/_0.7)] backdrop-blur-sm"
+          onClick={() => setModalOpen(false)}
+        >
+          <div
+            className="bg-card border border-border shadow-2xl rounded-sm w-full max-w-md max-h-[85vh] overflow-y-auto p-5 relative"
+            onClick={e => e.stopPropagation()}
+          >
+            <button
+              onClick={() => setModalOpen(false)}
+              aria-label="Fechar"
+              className="absolute top-4 right-4 text-muted-foreground hover:text-foreground transition-colors"
+            >
+              <X className="w-5 h-5" />
+            </button>
+
+            <p className="text-xs tracking-wider uppercase text-muted-foreground">Agenda do dia</p>
+            <h2 className="font-heading text-xl font-light capitalize mb-4">
+              {new Date(selected + 'T12:00:00').toLocaleDateString('pt-BR', { weekday: 'long', day: 'numeric', month: 'long' })}
+            </h2>
+
+            {selectedJobs.length === 0 ? (
+              <p className="text-sm text-muted-foreground py-4 text-center">Nenhum casting para este dia.</p>
+            ) : (
+              <div className="space-y-2">
+                {selectedJobs.map(j => {
+                  const st = stateStyle[stateOf(j)]
+                  return (
+                    <div key={j.castingId} className={`rounded-sm bg-muted/30 border border-border/50 border-l-2 ${st.border} p-3`}>
+                      <div className="flex items-center justify-between gap-2">
+                        <span className="text-xs text-primary font-medium tracking-wider uppercase">{j.brand ?? 'Casting'}</span>
+                        <span className="text-xs text-muted-foreground">{formatCurrency(j.cachet)}</span>
+                      </div>
+                      <h3 className="text-sm font-medium mt-0.5">{j.title}</h3>
+                      <div className="flex items-center gap-3 mt-1.5 flex-wrap">
+                        <span className={`text-[10px] px-1.5 py-0.5 rounded-sm ${st.pill}`}>{st.label}</span>
+                        {j.location && (
+                          <span className="flex items-center gap-1 text-xs text-muted-foreground">
+                            <MapPin className="w-3 h-3" />
+                            {j.location}
+                          </span>
+                        )}
+                      </div>
+                      <div className="flex gap-2 mt-3">
+                        <button
+                          onClick={() => decide(j.castingId, 'confirmado')}
+                          disabled={busy === j.castingId || j.decision === 'confirmado'}
+                          className="text-xs px-3 py-1.5 rounded-sm bg-primary/10 text-primary border border-primary/20 hover:bg-primary/20 transition-all disabled:opacity-40"
+                        >
+                          Confirmar
+                        </button>
+                        <button
+                          onClick={() => decide(j.castingId, 'recusado')}
+                          disabled={busy === j.castingId}
+                          className="text-xs px-3 py-1.5 rounded-sm bg-destructive/10 text-destructive border border-destructive/20 hover:bg-destructive/20 transition-all disabled:opacity-40"
+                        >
+                          Recusar
+                        </button>
+                      </div>
+                    </div>
+                  )
+                })}
+                {error && <p className="text-xs text-red-400">{error}</p>}
+              </div>
+            )}
           </div>
-        )}
-      </div>
+        </div>
+      )}
     </div>
   )
 }

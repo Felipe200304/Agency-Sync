@@ -1,16 +1,23 @@
 package com.agencysync.web;
 
 import com.agencysync.domain.AppUser;
+import com.agencysync.domain.Brand;
 import com.agencysync.domain.CalendarEvent;
+import com.agencysync.domain.Casting;
 import com.agencysync.domain.CastingModel;
 import com.agencysync.domain.FinanceRecord;
 import com.agencysync.repo.AppUserRepo;
+import com.agencysync.repo.BrandRepo;
 import com.agencysync.repo.CastingModelRepo;
+import com.agencysync.repo.CastingRepo;
 import com.agencysync.repo.EventRepo;
 import com.agencysync.repo.FinanceRepo;
 import com.agencysync.repo.ModelRepo;
+import com.agencysync.service.NotificationService;
 import com.agencysync.web.dto.AuthUser;
 import com.agencysync.web.dto.BlockRequest;
+import com.agencysync.web.dto.CastingDto;
+import com.agencysync.web.dto.CastingRequest;
 import com.agencysync.web.dto.DecisionRequest;
 import com.agencysync.web.dto.EventDto;
 import com.agencysync.web.dto.FinanceRecordDto;
@@ -51,15 +58,22 @@ class MeController {
     private final EventRepo events;
     private final CastingModelRepo castingModels;
     private final FinanceRepo finance;
+    private final CastingRepo castings;
+    private final BrandRepo brands;
+    private final NotificationService notifications;
     private final PasswordEncoder encoder;
 
     MeController(AppUserRepo users, ModelRepo models, EventRepo events,
-                 CastingModelRepo castingModels, FinanceRepo finance, PasswordEncoder encoder) {
+                 CastingModelRepo castingModels, FinanceRepo finance, CastingRepo castings,
+                 BrandRepo brands, NotificationService notifications, PasswordEncoder encoder) {
         this.users = users;
         this.models = models;
         this.events = events;
         this.castingModels = castingModels;
         this.finance = finance;
+        this.castings = castings;
+        this.brands = brands;
+        this.notifications = notifications;
         this.encoder = encoder;
     }
 
@@ -119,6 +133,26 @@ class MeController {
         return MeJobDto.from(castingModels.save(cm));
     }
 
+    // --- Castings da própria marca (portal do cliente) ---
+
+    @GetMapping("/castings")
+    List<CastingDto> myCastings(Principal principal) {
+        UUID brandId = requireBrandId(principal);
+        return castings.findByBrandIdOrderByCreatedAtDesc(brandId).stream().map(CastingDto::from).toList();
+    }
+
+    /** A marca solicita um casting — vinculado automaticamente à própria marca. */
+    @PostMapping("/castings")
+    @ResponseStatus(HttpStatus.CREATED)
+    CastingDto createCasting(Principal principal, @Valid @RequestBody CastingRequest req) {
+        Brand brand = brands.getReferenceById(requireBrandId(principal));
+        Casting casting = req.applyTo(new Casting(), brand);
+        casting.setStatus("solicitado");
+        Casting saved = castings.save(casting);
+        notifications.newCastingToAgency(saved);
+        return CastingDto.from(saved);
+    }
+
     // --- Finanças do modelo ---
 
     @GetMapping("/finance")
@@ -162,5 +196,11 @@ class MeController {
         UUID modelId = current(principal).getModelId();
         if (modelId == null) throw new NotFoundException("Modelo do usuário", principal.getName());
         return modelId;
+    }
+
+    private UUID requireBrandId(Principal principal) {
+        UUID brandId = current(principal).getBrandId();
+        if (brandId == null) throw new NotFoundException("Marca do usuário", principal.getName());
+        return brandId;
     }
 }

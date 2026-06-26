@@ -53,7 +53,7 @@ public class SecurityConfig {
                 .requestMatchers("/api/finance/**").hasRole("AGENCY")
                 .requestMatchers(HttpMethod.POST, "/api/models", "/api/agencies", "/api/brands").hasRole("AGENCY")
                 .requestMatchers(HttpMethod.PUT, "/api/agencies/**", "/api/brands/**").hasRole("AGENCY")
-                .requestMatchers(HttpMethod.POST, "/api/models/*/agencies", "/api/models/*/invite").hasRole("AGENCY")
+                .requestMatchers(HttpMethod.POST, "/api/models/*/agencies", "/api/models/*/invite", "/api/brands/*/invite").hasRole("AGENCY")
                 .requestMatchers(HttpMethod.PUT, "/api/models/*/agencies/**").hasRole("AGENCY")
                 // demais endpoints: qualquer usuário autenticado
                 .anyRequest().authenticated())

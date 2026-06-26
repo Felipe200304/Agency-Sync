@@ -35,7 +35,7 @@ export default function NovoCastingClientePage() {
     if (!form.title.trim()) { setError('Informe o título da campanha.'); return }
     setSaving(true); setError(null)
     try {
-      await api.createCasting({
+      await api.createMeCasting({
         title: form.title,
         date: form.date || undefined,
         time: form.time || undefined,

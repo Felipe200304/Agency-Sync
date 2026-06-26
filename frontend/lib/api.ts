@@ -305,6 +305,15 @@ export const api = {
       body: JSON.stringify({ decision }),
     }),
   meFinance: (token?: string) => request<ApiMeFinance>('/me/finance', undefined, token),
+
+  // --- Castings da própria marca (portal do cliente) ---
+  meCastings: (token?: string) => request<ApiCasting[]>('/me/castings', undefined, token),
+  createMeCasting: (body: NewCasting) =>
+    request<ApiCasting>('/me/castings', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(body),
+    }),
   // token opcional: usado pelos server components (SSR) que leem o cookie via next/headers.
   models: (token?: string) => request<ApiModel[]>('/models', undefined, token),
   model: (id: string, token?: string) => request<ApiModel>(`/models/${id}`, undefined, token),

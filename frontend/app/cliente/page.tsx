@@ -43,7 +43,7 @@ export default function ClientePage() {
   const [error, setError] = useState<string | null>(null)
 
   const load = useCallback(() => {
-    return Promise.all([api.castings(), api.models()])
+    return Promise.all([api.meCastings(), api.models()])
       .then(([cs, ms]) => {
         setCastings(cs)
         setAllModels(ms)

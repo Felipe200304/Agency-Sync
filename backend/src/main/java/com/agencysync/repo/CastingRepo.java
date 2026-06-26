@@ -8,4 +8,7 @@ import java.util.UUID;
 
 public interface CastingRepo extends JpaRepository<Casting, UUID> {
     List<Casting> findAllByOrderByCreatedAtDesc();
+
+    /** Castings de uma marca específica (portal do cliente). */
+    List<Casting> findByBrandIdOrderByCreatedAtDesc(UUID brandId);
 }

@@ -82,13 +82,13 @@ Este é o coração do sistema — o caminho de um casting:
 
 ### 4.1 Agência (`AGENCY`) — acesso a praticamente todas as telas
 - **Dashboard** com indicadores e gráficos. ✅
-- **Modelos:** cadastrar/gerenciar ficha completa. ✅ Gerar **link de convite** para o modelo criar o próprio login. 🔜
-- **Castings:** criar, acompanhar status, enviar modelos, gerenciar avaliação. ✅
-- **Marcas:** cadastro e histórico. ✅ (listagem ✅; cadastro pela tela 🔜)
+- **Modelos:** cadastrar/gerenciar ficha completa, **foto principal + galeria (book)** com compressão no cliente. ✅ Gerar **link de convite** para o modelo criar o próprio login. ✅
+- **Castings:** criar, acompanhar status (**editável direto na lista/kanban**), enviar/**escalar modelos**, gerenciar avaliação. ✅
+- **Marcas:** cadastro completo com **dados fiscais (CNPJ, razão social, endereço + busca de CEP)** para NF, e histórico. ✅ (histórico de campanhas 🔜)
 - **Agenda/Calendário:** criar e **editar** eventos (castings, trabalhos, reuniões, produções); export em Excel. ✅ (calendário consolidado editável 🔜)
-- **Financeiro:** cachês, comissões e repasses com status de pagamento ✅; **lançar despesas** (custos da agência, não só receitas) 🔜.
-- **Configurações** da agência/conta. 🔜
-- **Equipe:** gestão de funcionários com permissões por função. 🔜 (papéis a definir)
+- **Financeiro:** cachês, comissões e repasses com status de pagamento ✅; **lançar despesas** (custos da agência). ✅
+- **Configurações** da agência/conta. ✅
+- **Equipe:** **múltiplos logins por agência com papéis e acessos diferentes** (RBAC). 🔜 (**Fase 1 da monetização — ver seção 9**)
 
 ### 4.2 Marca (`BRAND`)
 - Solicitar um novo trabalho pelo sistema. ✅
@@ -96,16 +96,18 @@ Este é o coração do sistema — o caminho de um casting:
 - Ver os modelos enviados e **aprovar/reprovar** cada candidato. ✅
 - Explorar modelos e histórico de campanhas. ✅ (explorar ✅; histórico 🔜)
 
-### 4.3 Modelo (`MODEL`)
-- Criar a conta pelo **link de convite** da agência. 🔜
-- **Bloquear dias** na própria agenda (indisponibilidade). 🔜 (backend já suporta o tipo `indisponivel`; falta a tela)
-- **Aceitar/confirmar** os trabalhos que a agência enviar. 🔜
-- Ver as **próprias finanças:** nº de trabalhos, **total líquido recebido**, **histórico de trabalhos** e **valor das comissões**. 🔜
-- **Agenda pessoal unificada** (de todas as suas agências); export em Excel. ✅
+### 4.3 Modelo (`MODEL`)  — **área mobile-first** (tab bar no rodapé; rumo a app)
+- Criar a conta pelo **link de convite** da agência. ✅
+- **Confirmar presença nos castings** que a agência enviar ("Meus Castings"). ✅
+- **Agenda em calendário** mostrando **Casting** (presença confirmada pelo modelo) e **Trabalho** (modelo aprovado pela marca), com modal por dia e confirmar/recusar. ✅ Export em Excel. ✅
+- Ver as **próprias finanças:** nº de trabalhos, **total líquido recebido**, **histórico** e **valor das comissões**. ✅
+- **Bloquear dias** (indisponibilidade): backend suporta `indisponivel`; UI saiu da agenda na virada para calendário — **a reavaliar**. 🔜
 - Enviar/atualizar seu material (fotos, medidas) para cada agência. 🔜
 
-### 4.4 Notas Fiscais (futuro)
-- Opção para o **modelo** e a **agência** **gerarem suas NFs** a partir dos lançamentos financeiros. 🔜 (fase futura)
+> **Casting ≠ Trabalho:** o casting é o **teste**; o modelo **confirma presença** no casting; quem **aprova o modelo para o trabalho é a marca**. Só então vira trabalho (na agenda, dourado).
+
+### 4.4 Notas Fiscais
+- **Emissão de NF** disponível como parte do **plano Pro do modelo** (e para a agência), via provedor de NFS-e. 🔜 (**Fase 2 da monetização — ver seção 9**)
 
 ---
 
@@ -144,25 +146,57 @@ Hoje existe a **interface navegável** (todas as telas desenhadas), porém com *
 
 ## 8. Entrega em fases
 
+**Fases de produto já entregues:**
+
 | Fase | Entrega | Status |
 |------|---------|--------|
 | **1 — Base** | Login único + papéis (AGENCY/MODEL/BRAND), banco, agências, modelos (multi-agência), marcas, agenda + export Excel | ✅ feito |
 | **2 — Casting** | Fluxo completo (solicitar → enviar → aprovar → confirmar) nas telas da agência e do cliente | ✅ feito |
 | **3 — Financeiro** | Cachês/comissão/repasses, status de pagamento, multi-moeda, gráficos por mês | ✅ feito |
 | **Hardening auth** | JWT por requisição + autorização por papel | ✅ feito |
-| **4 — Capacidades do Modelo** | Bloquear dias na agenda; **aceitar/confirmar** trabalhos; ver **próprias finanças** (nº de trabalhos, líquido recebido, histórico, comissões) | 🔜 próxima |
-| **5 — Capacidades extra da Agência** | **Link de convite** p/ o modelo criar login; **lançar despesas**; calendário consolidado editável; **configurações** | 🔜 |
-| **6 — Portais externos** | Notificações (WhatsApp/e-mail) + contratos em PDF | 🔜 |
-| **7 — Notas Fiscais** | Modelo e agência **geram suas NFs** a partir dos lançamentos | 🔜 futuro |
-| **8 — Internacional + Extras** | PT/EN, relatórios, refinamentos | 🔜 |
-| **Futuro** | Funcionários da agência (papéis/permissões a definir), scouting | 🔜 |
+| **4 — Capacidades do Modelo** | Convite; **agenda em calendário** (casting/trabalho); **confirmar presença**; próprias finanças; **área mobile-first** | ✅ feito |
+| **5 — Capacidades extra da Agência** | Convite de modelo; **despesas**; **configurações**; cadastro de marca com **dados fiscais + CEP**; **fotos/galeria do modelo**; status de casting editável na lista/kanban | ✅ feito |
+| **6 — Portais externos** | Notificações (e-mail iniciado; **WhatsApp** 🔜) + contratos em **PDF** 🔜 | 🟡 parcial |
+
+**Roadmap de monetização (ver seção 9):**
+
+| Fase | Entrega | Status |
+|------|---------|--------|
+| **M1 — Agência: RBAC + Assinatura** | Múltiplos logins por agência com **papéis/acessos** (ADMIN/BOOKER/SCOUT/FINANCE) + **billing de assinatura** (faixa de seats) | 🔜 **PRÓXIMA** |
+| **M2 — Modelo Pro + NF** | Plano **Pro** opcional do modelo com **emissão de NF** (provedor NFS-e); NF também p/ agência | 🔜 |
+| **M3 — Vitrine de Talentos + Boost** | Scouting aberto: perfis auto-listados, agências navegam, **boost pago**; **verificar agências** e **proteger menores** | 🔜 futuro |
+| **Extras** | Internacional PT/EN, relatórios, refinamentos | 🔜 |
 
 ---
 
-## 9. Pendências para alinhar
+## 9. Modelo de negócio e monetização (decidido em 2026-06-26)
+
+Quem é o cliente pagante e por quê:
+
+| Lado | Cobrança | Racional |
+|------|----------|----------|
+| **Marca** | **Grátis** | Lado da demanda — maximiza o volume de castings, que é o valor que sustenta a assinatura da agência. |
+| **Agência** | **Assinatura mensal multi-seat** | Lado que extrai o valor operacional (CRM, agenda, financeiro). Cobrar **por faixa de logins** (nº de funcionários ≈ tamanho ≈ capacidade de pagar). |
+| **Modelo** | **Grátis** + **Pro** opcional | App grátis garante adesão/retenção; quem quiser **NF** assina o **Pro**. NF é **add-on de valor**, não mensalidade forçada a todos. |
+| **Talentos (futuro)** | Grátis p/ postar + **boost pago** | Aspirantes se listam; pagam para **impulsionar visibilidade** às agências. |
+
+**Roadmap de monetização em fases:**
+
+1. **Fase 1 — Agência: RBAC + Assinatura.** Vários usuários por agência com **papéis e escopo de acesso** (ADMIN/BOOKER/SCOUT/FINANCE) e **billing de assinatura** por faixa de seats. É o **pré-requisito** da própria assinatura e da futura verificação de agências. → **próxima a desenvolver.**
+2. **Fase 2 — Modelo Pro + NF.** Plano Pro do modelo incluindo **emissão de NF** via **provedor de NFS-e** (Focus NFe / eNotas / PlugNotas / NFe.io). Validar antes se é o modelo ou a agência quem emite a nota no fluxo real.
+3. **Fase 3 — Vitrine de talentos + boost (futuro).** Produto separado do "modelo gerenciado": perfis de scouting auto-listados, agências navegam, **boost pago** para mais visibilidade. **Requisitos inegociáveis:** verificar agências, proteger menores (gate de idade/consentimento), e **boost como desempate dentro da relevância** (não furar a fila).
+
+**Princípios:** não cobrar da marca (subsidiar a demanda); não cobrar mensalidade fixa de NF de todo modelo (renda esporádica → churn); concentrar a receita-base na **agência**; sequenciar as frentes de cobrança (M1 → M2 → M3) para não acumular complexidade de billing.
+
+> Atenção a app store: assinatura digital vendida dentro de app iOS/Android sofre taxa de 15–30% — considerar no preço do Pro.
+
+---
+
+## 10. Pendências para alinhar
 
 - Validar se o fluxo e as regras acima refletem 100% a operação da agência.
 - Definir prazos e investimento por fase.
+- **Definir o escopo de permissões por papel da agência** (o que ADMIN/BOOKER/SCOUT/FINANCE veem e podem fazer) — entra na Fase 1 da monetização.
 
 ---
 

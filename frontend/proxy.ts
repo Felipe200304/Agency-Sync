@@ -8,7 +8,7 @@ const SECTIONS: { prefix: string; role: string; home: string }[] = [
   { prefix: '/client', role: 'BRAND', home: '/client' },
 ]
 
-export function middleware(req: NextRequest) {
+export function proxy(req: NextRequest) {
   const { pathname } = req.nextUrl
   const section = SECTIONS.find(s => pathname.startsWith(s.prefix))
   if (!section) return NextResponse.next()

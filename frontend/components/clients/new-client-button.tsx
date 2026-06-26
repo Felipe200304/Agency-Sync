@@ -2,8 +2,9 @@
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { Plus, X } from 'lucide-react'
+import { Plus, X, Loader2 } from 'lucide-react'
 import { api } from '@/lib/api'
+import { formatCep, cepDigits, lookupCep } from '@/lib/cep'
 
 const initial = {
   name: '', legalName: '', cnpj: '', responsible: '', email: '', phone: '',
@@ -22,14 +23,39 @@ export function NewClientButton() {
   const [form, setForm] = useState(initial)
   const [saving, setSaving] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  const [cepLoading, setCepLoading] = useState(false)
+  const [cepError, setCepError] = useState<string | null>(null)
 
   const set = (field: keyof typeof initial) => (e: { target: { value: string } }) =>
     setForm(prev => ({ ...prev, [field]: e.target.value }))
+
+  async function onCepChange(e: { target: { value: string } }) {
+    const cep = formatCep(e.target.value)
+    setForm(prev => ({ ...prev, cep }))
+    setCepError(null)
+    if (cepDigits(cep).length !== 8) return
+    // Busca automática quando o CEP fica completo (8 dígitos).
+    setCepLoading(true)
+    const found = await lookupCep(cep)
+    setCepLoading(false)
+    if (!found) {
+      setCepError('CEP não encontrado.')
+      return
+    }
+    setForm(prev => ({
+      ...prev,
+      street: found.street || prev.street,
+      district: found.district || prev.district,
+      city: found.city || prev.city,
+      state: found.state || prev.state,
+    }))
+  }
 
   function close() {
     setOpen(false)
     setForm(initial)
     setError(null)
+    setCepError(null)
   }
 
   async function handleSubmit(e: React.FormEvent) {
@@ -128,7 +154,13 @@ export function NewClientButton() {
                 <div className="grid grid-cols-6 gap-4">
                   <div className="col-span-2">
                     <label className={labelClass}>CEP</label>
-                    <input value={form.cep} onChange={set('cep')} className={fieldClass} placeholder="00000-000" />
+                    <div className="relative">
+                      <input value={form.cep} onChange={onCepChange} inputMode="numeric" maxLength={9} className={fieldClass} placeholder="00000-000" />
+                      {cepLoading && (
+                        <Loader2 className="w-4 h-4 text-primary animate-spin absolute right-3 top-1/2 -translate-y-1/2" />
+                      )}
+                    </div>
+                    {cepError && <p className="text-xs text-red-400 mt-1">{cepError}</p>}
                   </div>
                   <div className="col-span-4">
                     <label className={labelClass}>Logradouro</label>

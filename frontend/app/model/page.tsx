@@ -6,15 +6,15 @@ import type { ApiModel, ApiMeFinance } from '@/lib/api'
 export const dynamic = 'force-dynamic'
 
 const statusColors: Record<string, string> = {
-  pago: 'text-primary bg-primary/10 border-primary/20',
-  pendente: 'text-yellow-400 bg-yellow-400/10 border-yellow-400/20',
-  atrasado: 'text-destructive bg-destructive/10 border-destructive/20',
+  paid: 'text-primary bg-primary/10 border-primary/20',
+  pending: 'text-yellow-400 bg-yellow-400/10 border-yellow-400/20',
+  overdue: 'text-destructive bg-destructive/10 border-destructive/20',
 }
-const statusLabels: Record<string, string> = { pago: 'Pago', pendente: 'Pendente', atrasado: 'Atrasado' }
+const statusLabels: Record<string, string> = { paid: 'Pago', pending: 'Pendente', overdue: 'Atrasado' }
 const modelStatus: Record<string, { label: string; color: string }> = {
-  disponivel: { label: 'Disponível', color: 'text-primary bg-primary/10 border-primary/20' },
-  'em-campanha': { label: 'Em Campanha', color: 'text-blue-400 bg-blue-400/10 border-blue-400/20' },
-  inativo: { label: 'Inativo', color: 'text-muted-foreground bg-muted/30 border-border' },
+  available: { label: 'Disponível', color: 'text-primary bg-primary/10 border-primary/20' },
+  'on-campaign': { label: 'Em Campanha', color: 'text-blue-400 bg-blue-400/10 border-blue-400/20' },
+  inactive: { label: 'Inativo', color: 'text-muted-foreground bg-muted/30 border-border' },
 }
 
 const fmt = (v: number, currency = 'BRL') => v.toLocaleString('pt-BR', { style: 'currency', currency })

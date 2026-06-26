@@ -8,21 +8,21 @@ import type { CastingStatus } from '@/lib/types'
 import { Plus, MapPin, DollarSign, Calendar, Users } from 'lucide-react'
 
 const columns: { status: CastingStatus; label: string; color: string }[] = [
-  { status: 'solicitado',       label: 'Solicitado',       color: 'text-blue-400' },
-  { status: 'em-analise',       label: 'Em Análise',       color: 'text-yellow-400' },
-  { status: 'modelos-enviados', label: 'Modelos Enviados', color: 'text-orange-400' },
-  { status: 'em-avaliacao',     label: 'Em Avaliação',     color: 'text-purple-400' },
-  { status: 'confirmado',       label: 'Confirmado',       color: 'text-primary' },
-  { status: 'concluido',        label: 'Concluído',        color: 'text-muted-foreground' },
+  { status: 'requested',       label: 'Solicitado',       color: 'text-blue-400' },
+  { status: 'reviewing',       label: 'Em Análise',       color: 'text-yellow-400' },
+  { status: 'models-submitted', label: 'Modelos Enviados', color: 'text-orange-400' },
+  { status: 'evaluating',     label: 'Em Avaliação',     color: 'text-purple-400' },
+  { status: 'confirmed',       label: 'Confirmado',       color: 'text-primary' },
+  { status: 'completed',        label: 'Concluído',        color: 'text-muted-foreground' },
 ]
 
 const statusDot: Record<CastingStatus, string> = {
-  'solicitado':       'bg-blue-400',
-  'em-analise':       'bg-yellow-400',
-  'modelos-enviados': 'bg-orange-400',
-  'em-avaliacao':     'bg-purple-400',
-  'confirmado':       'bg-primary',
-  'concluido':        'bg-muted-foreground',
+  'requested':       'bg-blue-400',
+  'reviewing':       'bg-yellow-400',
+  'models-submitted': 'bg-orange-400',
+  'evaluating':     'bg-purple-400',
+  'confirmed':       'bg-primary',
+  'completed':        'bg-muted-foreground',
 }
 
 function formatCurrency(val: number | null) {

@@ -10,9 +10,9 @@ import type { Model, ModelStatus } from '@/lib/types'
 
 const statusFilters: { value: ModelStatus | 'todos'; label: string }[] = [
   { value: 'todos', label: 'Todos' },
-  { value: 'disponivel', label: 'Disponível' },
-  { value: 'em-campanha', label: 'Em Campanha' },
-  { value: 'inativo', label: 'Inativo' },
+  { value: 'available', label: 'Disponível' },
+  { value: 'on-campaign', label: 'Em Campanha' },
+  { value: 'inactive', label: 'Inativo' },
 ]
 
 export default function ModelsPage() {

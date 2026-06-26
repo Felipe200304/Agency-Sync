@@ -20,10 +20,10 @@ export default async function DashboardPage() {
   let castings: ApiCasting[] = []
   try {
     const [models, cs, finance] = await Promise.all([api.models(token), api.castings(token), api.finance(token)])
-    activeModels = models.filter(m => m.status !== 'inativo').length
+    activeModels = models.filter(m => m.status !== 'inactive').length
     castings = cs
-    openCastings = cs.filter(c => c.status !== 'concluido').length
-    pendingPayments = finance.filter(f => f.status === 'pendente').reduce((acc, f) => acc + f.cachet, 0)
+    openCastings = cs.filter(c => c.status !== 'completed').length
+    pendingPayments = finance.filter(f => f.status === 'pending').reduce((acc, f) => acc + f.cachet, 0)
     totalRevenue = finance.reduce((acc, f) => acc + f.cachet, 0)
   } catch {
     // backend indisponível — KPIs ficam zerados
@@ -82,7 +82,7 @@ export default async function DashboardPage() {
           <div className="bg-card border border-border rounded-sm p-6">
             <p className="text-xs tracking-widest uppercase text-muted-foreground mb-5">Próximos Castings</p>
             <div className="space-y-3">
-              {castings.filter(c => !['concluido', 'confirmado'].includes(c.status)).slice(0, 4).map((c) => (
+              {castings.filter(c => !['completed', 'confirmed'].includes(c.status)).slice(0, 4).map((c) => (
                 <Link
                   key={c.id}
                   href={`/dashboard/castings/${c.id}`}

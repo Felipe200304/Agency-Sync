@@ -9,15 +9,15 @@ import { api, toModel } from '@/lib/api'
 import type { ApiAgencyLink, ApiModelPhoto } from '@/lib/api'
 
 const statusLabel: Record<string, { label: string; color: string }> = {
-  'disponivel': { label: 'Disponível', color: 'text-green-400 bg-green-400/10 border-green-400/20' },
-  'em-campanha': { label: 'Em Campanha', color: 'text-primary bg-primary/10 border-primary/20' },
-  'inativo': { label: 'Inativo', color: 'text-muted-foreground bg-muted/50 border-border' },
+  'available': { label: 'Disponível', color: 'text-green-400 bg-green-400/10 border-green-400/20' },
+  'on-campaign': { label: 'Em Campanha', color: 'text-primary bg-primary/10 border-primary/20' },
+  'inactive': { label: 'Inativo', color: 'text-muted-foreground bg-muted/50 border-border' },
 }
 
 const paymentColors: Record<string, string> = {
-  pago: 'text-green-400',
-  pendente: 'text-primary',
-  atrasado: 'text-destructive',
+  paid: 'text-green-400',
+  pending: 'text-primary',
+  overdue: 'text-destructive',
 }
 
 const roleInfo: Record<ApiAgencyLink['role'], { label: string; icon: typeof Home }> = {
@@ -182,13 +182,13 @@ export default async function ModelProfilePage({ params }: { params: Promise<{ i
                           <p className="text-xs text-muted-foreground">{work.brand}</p>
                         </div>
                         <div className="flex items-center gap-1.5 flex-shrink-0">
-                          {work.paymentStatus === 'pago' ? (
+                          {work.paymentStatus === 'paid' ? (
                             <CheckCircle2 className="w-3.5 h-3.5 text-green-400" />
                           ) : (
                             <Clock className="w-3.5 h-3.5 text-primary" />
                           )}
                           <span className={`text-xs font-medium ${paymentColors[work.paymentStatus]}`}>
-                            {work.paymentStatus === 'pago' ? 'Pago' : 'Pendente'}
+                            {work.paymentStatus === 'paid' ? 'Pago' : 'Pendente'}
                           </span>
                         </div>
                       </div>

@@ -98,7 +98,7 @@ class MeController {
         UUID modelId = requireModelId(principal);
         CalendarEvent e = new CalendarEvent();
         e.setModel(models.getReferenceById(modelId));
-        e.setType("indisponivel");
+        e.setType("unavailable");
         e.setTitle(req.title() == null || req.title().isBlank() ? "Indisponível" : req.title());
         e.setEventDate(req.date());
         return EventDto.from(events.save(e));
@@ -110,7 +110,7 @@ class MeController {
     void removeBlock(Principal principal, @PathVariable UUID eventId) {
         UUID modelId = requireModelId(principal);
         CalendarEvent e = events.findById(eventId).orElseThrow(() -> new NotFoundException("Evento", eventId));
-        if (!e.getModel().getId().equals(modelId) || !"indisponivel".equals(e.getType())) {
+        if (!e.getModel().getId().equals(modelId) || !"unavailable".equals(e.getType())) {
             throw new NotFoundException("Evento", eventId);
         }
         events.delete(e);
@@ -148,7 +148,7 @@ class MeController {
     CastingDto createCasting(Principal principal, @Valid @RequestBody CastingRequest req) {
         Brand brand = brands.getReferenceById(requireBrandId(principal));
         Casting casting = req.applyTo(new Casting(), brand);
-        casting.setStatus("solicitado");
+        casting.setStatus("requested");
         Casting saved = castings.save(casting);
         notifications.newCastingToAgency(saved);
         return CastingDto.from(saved);
@@ -165,7 +165,7 @@ class MeController {
                 .orElseThrow(() -> new NotFoundException("Model in casting", modelId));
         cm.setStatus(req.status());
         Casting saved = castings.save(casting);
-        if ("aprovado".equals(req.status())) {
+        if ("approved".equals(req.status())) {
             notifications.workConfirmedToModel(saved, cm.getModel());
         }
         return CastingDto.from(saved);
@@ -194,7 +194,7 @@ class MeController {
         for (FinanceRecord r : rs) {
             gross = gross.add(r.getCachet());
             commission = commission.add(r.agencyCommission());
-            if ("pago".equals(r.getStatus())) netReceived = netReceived.add(r.modelValue());
+            if ("paid".equals(r.getStatus())) netReceived = netReceived.add(r.modelValue());
             else netPending = netPending.add(r.modelValue());
         }
         var summary = new MeFinanceDto.Summary(rs.size(), gross, netReceived, netPending, commission);

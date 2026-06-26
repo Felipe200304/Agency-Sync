@@ -29,7 +29,7 @@ export default async function ModelAgendaPage() {
   // no calendário os com data que o modelo confirmou presença (casting) ou que
   // a marca já aprovou (trabalho). Recusados ficam de fora.
   const agendaJobs = jobs.filter(
-    j => j.date && j.decision !== 'recusado' && (j.decision === 'confirmado' || j.brandStatus === 'aprovado'),
+    j => j.date && j.decision !== 'declined' && (j.decision === 'confirmed' || j.brandStatus === 'approved'),
   )
 
   return (

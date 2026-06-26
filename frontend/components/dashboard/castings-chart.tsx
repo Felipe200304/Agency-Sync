@@ -5,12 +5,12 @@ import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer, Legend } from 'recha
 import { api } from '@/lib/api'
 
 const STATUS: { key: string; name: string; color: string }[] = [
-  { key: 'concluido', name: 'Concluído', color: 'oklch(0.72 0.16 150)' },
-  { key: 'confirmado', name: 'Confirmado', color: 'oklch(0.70 0.15 250)' },
-  { key: 'em-avaliacao', name: 'Em Avaliação', color: 'oklch(0.68 0.16 300)' },
-  { key: 'modelos-enviados', name: 'Modelos Enviados', color: 'oklch(0.74 0.15 50)' },
-  { key: 'em-analise', name: 'Em Análise', color: 'oklch(0.80 0.13 85)' },
-  { key: 'solicitado', name: 'Solicitado', color: 'oklch(0.68 0.17 20)' },
+  { key: 'completed', name: 'Concluído', color: 'oklch(0.72 0.16 150)' },
+  { key: 'confirmed', name: 'Confirmado', color: 'oklch(0.70 0.15 250)' },
+  { key: 'evaluating', name: 'Em Avaliação', color: 'oklch(0.68 0.16 300)' },
+  { key: 'models-submitted', name: 'Modelos Enviados', color: 'oklch(0.74 0.15 50)' },
+  { key: 'reviewing', name: 'Em Análise', color: 'oklch(0.80 0.13 85)' },
+  { key: 'requested', name: 'Solicitado', color: 'oklch(0.68 0.17 20)' },
 ]
 
 export function CastingsChart() {

@@ -17,7 +17,7 @@ export default async function ClientsPage() {
     error = 'Não foi possível carregar os clientes. Verifique se o backend está rodando.'
   }
 
-  const active = brands.filter(b => b.status === 'ativo').length
+  const active = brands.filter(b => b.status === 'active').length
 
   return (
     <div className="p-6">
@@ -96,11 +96,11 @@ export default async function ClientsPage() {
                 </td>
                 <td className="px-5 py-4">
                   <span className={`text-xs px-2.5 py-1 rounded-sm border ${
-                    b.status === 'ativo'
+                    b.status === 'active'
                       ? 'text-primary bg-primary/10 border-primary/20'
                       : 'text-muted-foreground bg-muted/30 border-border'
                   }`}>
-                    {b.status === 'ativo' ? 'Ativo' : 'Inativo'}
+                    {b.status === 'active' ? 'Ativo' : 'Inativo'}
                   </span>
                 </td>
                 <td className="px-5 py-4">

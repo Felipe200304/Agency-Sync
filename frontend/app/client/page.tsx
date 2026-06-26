@@ -10,22 +10,22 @@ import {
 } from 'lucide-react'
 
 const statusConfig: Record<string, { label: string; color: string }> = {
-  solicitado: { label: 'Solicitado', color: 'text-blue-400 bg-blue-400/10 border-blue-400/20' },
-  'em-analise': { label: 'Em Análise', color: 'text-yellow-400 bg-yellow-400/10 border-yellow-400/20' },
-  'modelos-enviados': { label: 'Modelos Enviados', color: 'text-orange-400 bg-orange-400/10 border-orange-400/20' },
-  'em-avaliacao': { label: 'Em Avaliação', color: 'text-purple-400 bg-purple-400/10 border-purple-400/20' },
-  confirmado: { label: 'Confirmado', color: 'text-primary bg-primary/10 border-primary/20' },
-  concluido: { label: 'Concluído', color: 'text-muted-foreground bg-muted/30 border-border' },
+  requested: { label: 'Solicitado', color: 'text-blue-400 bg-blue-400/10 border-blue-400/20' },
+  'reviewing': { label: 'Em Análise', color: 'text-yellow-400 bg-yellow-400/10 border-yellow-400/20' },
+  'models-submitted': { label: 'Modelos Enviados', color: 'text-orange-400 bg-orange-400/10 border-orange-400/20' },
+  'evaluating': { label: 'Em Avaliação', color: 'text-purple-400 bg-purple-400/10 border-purple-400/20' },
+  confirmed: { label: 'Confirmado', color: 'text-primary bg-primary/10 border-primary/20' },
+  completed: { label: 'Concluído', color: 'text-muted-foreground bg-muted/30 border-border' },
 }
 
 const modelStatusIcon: Record<string, React.ReactNode> = {
-  enviado: <Clock3 className="w-3.5 h-3.5 text-yellow-400" />,
-  aprovado: <CheckCircle className="w-3.5 h-3.5 text-primary" />,
-  reprovado: <XCircle className="w-3.5 h-3.5 text-destructive" />,
-  pendente: <Clock3 className="w-3.5 h-3.5 text-muted-foreground" />,
+  submitted: <Clock3 className="w-3.5 h-3.5 text-yellow-400" />,
+  approved: <CheckCircle className="w-3.5 h-3.5 text-primary" />,
+  rejected: <XCircle className="w-3.5 h-3.5 text-destructive" />,
+  pending: <Clock3 className="w-3.5 h-3.5 text-muted-foreground" />,
 }
 const modelStatusLabel: Record<string, string> = {
-  enviado: 'Enviado', aprovado: 'Aprovado', reprovado: 'Reprovado', pendente: 'Pendente',
+  submitted: 'Enviado', approved: 'Aprovado', rejected: 'Reprovado', pending: 'Pendente',
 }
 
 const fmt = (v: number | null) => (v == null ? '—' : v.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' }))
@@ -61,7 +61,7 @@ export default function ClientPage() {
   }
 
   const selected = castings.find(c => c.id === selectedId) ?? null
-  const activeCastings = castings.filter(c => c.status !== 'concluido')
+  const activeCastings = castings.filter(c => c.status !== 'completed')
   const totalModels = castings.reduce((s, c) => s + c.models.length, 0)
   const exploreModels = allModels.map(toModel).filter(m =>
     m.artisticName.toLowerCase().includes(search.toLowerCase()) ||
@@ -205,11 +205,11 @@ export default function ClientPage() {
                               <span>{modelStatusLabel[cm.status]}</span>
                             </div>
                             <div className="flex gap-1.5">
-                              <button onClick={() => decide(selected.id, cm.modelId, 'aprovado')}
+                              <button onClick={() => decide(selected.id, cm.modelId, 'approved')}
                                 className="text-xs px-2.5 py-1 rounded-sm bg-primary/10 text-primary border border-primary/20 hover:bg-primary/20 transition-all">
                                 Aprovar
                               </button>
-                              <button onClick={() => decide(selected.id, cm.modelId, 'reprovado')}
+                              <button onClick={() => decide(selected.id, cm.modelId, 'rejected')}
                                 className="text-xs px-2.5 py-1 rounded-sm bg-destructive/10 text-destructive border border-destructive/20 hover:bg-destructive/20 transition-all">
                                 Reprovar
                               </button>
@@ -260,7 +260,7 @@ export default function ClientPage() {
               <div key={m.id} className="group">
                 <div className="aspect-[3/4] rounded-sm overflow-hidden mb-2 relative">
                   <img src={m.photo} alt={m.artisticName} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
-                  {m.status === 'disponivel' && (
+                  {m.status === 'available' && (
                     <div className="absolute top-2 right-2 w-2.5 h-2.5 bg-green-400 rounded-full border border-background" />
                   )}
                 </div>

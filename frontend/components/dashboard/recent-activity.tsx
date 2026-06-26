@@ -3,17 +3,17 @@
 import { useEffect, useState } from 'react'
 import { api } from '@/lib/api'
 
-type Item = { date: string; text: string; type: 'novo' | 'pagamento' | 'aprovado' }
+type Item = { date: string; text: string; type: 'novo' | 'pagamento' | 'approved' }
 
 const colors: Record<string, string> = {
-  aprovado: 'text-green-400',
+  approved: 'text-green-400',
   novo: 'text-primary',
   pagamento: 'text-blue-400',
 }
 
 const castingStatusLabel: Record<string, string> = {
-  solicitado: 'solicitado', 'em-analise': 'em análise', 'modelos-enviados': 'modelos enviados',
-  'em-avaliacao': 'em avaliação', confirmado: 'confirmado', concluido: 'concluído',
+  requested: 'requested', 'reviewing': 'em análise', 'models-submitted': 'modelos enviados',
+  'evaluating': 'em avaliação', confirmed: 'confirmed', completed: 'concluído',
 }
 
 const fmt = (v: number) => v.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })
@@ -30,7 +30,7 @@ export function RecentActivity() {
           if (!c.createdAt) return
           acts.push({
             date: c.createdAt,
-            type: c.status === 'confirmado' || c.status === 'concluido' ? 'aprovado' : 'novo',
+            type: c.status === 'confirmed' || c.status === 'completed' ? 'approved' : 'novo',
             text: `Casting "${c.title}"${c.brand ? ` (${c.brand})` : ''} — ${castingStatusLabel[c.status] ?? c.status}`,
           })
         })
@@ -39,7 +39,7 @@ export function RecentActivity() {
           acts.push({
             date: r.date,
             type: 'pagamento',
-            text: r.status === 'pago'
+            text: r.status === 'paid'
               ? `Pagamento recebido: ${r.campaign ?? 'cachê'} — ${fmt(r.cachet)}`
               : `Cachê ${r.status}: ${r.campaign ?? '—'} — ${fmt(r.cachet)}`,
           })

@@ -22,7 +22,7 @@ public record FinanceRequest(
         r.setCachet(cachet);
         r.setCurrency(currency == null || currency.isBlank() ? "BRL" : currency);
         r.setCommissionPercent(commissionPercent == null ? new BigDecimal("20.00") : commissionPercent);
-        r.setStatus(status == null || status.isBlank() ? "pendente" : status);
+        r.setStatus(status == null || status.isBlank() ? "pending" : status);
         r.setPaymentDeadline(paymentDeadline);
         return r;
     }

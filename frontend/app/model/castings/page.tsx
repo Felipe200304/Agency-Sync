@@ -6,14 +6,14 @@ import type { ApiJob } from '@/lib/api'
 import { Calendar, MapPin, DollarSign, CheckCircle, XCircle, Clock3 } from 'lucide-react'
 
 const brandStatusLabel: Record<string, string> = {
-  enviado: 'Convite de casting', aprovado: 'Selecionada para o trabalho',
-  reprovado: 'Não selecionada', pendente: 'Aguardando avaliação da marca',
+  submitted: 'Convite de casting', approved: 'Selecionada para o trabalho',
+  rejected: 'Não selecionada', pending: 'Aguardando avaliação da marca',
 }
 
 const decisionBadge: Record<string, { label: string; color: string; icon: React.ReactNode }> = {
-  pendente: { label: 'Confirme sua presença', color: 'text-yellow-400 bg-yellow-400/10 border-yellow-400/20', icon: <Clock3 className="w-3.5 h-3.5" /> },
-  confirmado: { label: 'Presença confirmada', color: 'text-primary bg-primary/10 border-primary/20', icon: <CheckCircle className="w-3.5 h-3.5" /> },
-  recusado: { label: 'Você recusou', color: 'text-destructive bg-destructive/10 border-destructive/20', icon: <XCircle className="w-3.5 h-3.5" /> },
+  pending: { label: 'Confirme sua presença', color: 'text-yellow-400 bg-yellow-400/10 border-yellow-400/20', icon: <Clock3 className="w-3.5 h-3.5" /> },
+  confirmed: { label: 'Presença confirmada', color: 'text-primary bg-primary/10 border-primary/20', icon: <CheckCircle className="w-3.5 h-3.5" /> },
+  declined: { label: 'Você recusou', color: 'text-destructive bg-destructive/10 border-destructive/20', icon: <XCircle className="w-3.5 h-3.5" /> },
 }
 
 const fmt = (v: number | null) => (v == null ? '—' : v.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' }))
@@ -73,11 +73,11 @@ export default function TrabalhosPage() {
                 <span className="flex items-center gap-1"><DollarSign className="w-3 h-3" />{fmt(j.cachet)}</span>
               </div>
               <div className="flex gap-2">
-                <button onClick={() => decide(j.castingId, 'confirmado')} disabled={j.decision === 'confirmado'}
+                <button onClick={() => decide(j.castingId, 'confirmed')} disabled={j.decision === 'confirmed'}
                   className="text-xs px-3 py-1.5 rounded-sm bg-primary/10 text-primary border border-primary/20 hover:bg-primary/20 transition-all disabled:opacity-40">
                   Confirmar presença
                 </button>
-                <button onClick={() => decide(j.castingId, 'recusado')} disabled={j.decision === 'recusado'}
+                <button onClick={() => decide(j.castingId, 'declined')} disabled={j.decision === 'declined'}
                   className="text-xs px-3 py-1.5 rounded-sm bg-destructive/10 text-destructive border border-destructive/20 hover:bg-destructive/20 transition-all disabled:opacity-40">
                   Recusar
                 </button>

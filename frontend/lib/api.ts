@@ -82,7 +82,7 @@ export interface ApiAgencyLink {
 export interface ApiCastingModel {
   modelId: string
   modelName: string
-  status: 'enviado' | 'aprovado' | 'reprovado' | 'pendente'
+  status: 'submitted' | 'approved' | 'rejected' | 'pending'
 }
 
 export interface ApiCasting {
@@ -141,7 +141,7 @@ export interface ApiFinanceRecord {
   currency: string
   agencyComission: number
   modelValue: number
-  status: 'pago' | 'pendente' | 'atrasado'
+  status: 'paid' | 'pending' | 'overdue'
   paymentDate: string | null
 }
 
@@ -159,7 +159,7 @@ export interface ApiExpense {
   amount: number
   currency: string
   date: string | null
-  status: 'pago' | 'pendente'
+  status: 'paid' | 'pending'
 }
 
 export interface NewExpense {
@@ -178,8 +178,8 @@ export interface ApiJob {
   date: string | null
   location: string | null
   cachet: number | null
-  brandStatus: 'enviado' | 'aprovado' | 'reprovado' | 'pendente'
-  decision: 'pendente' | 'confirmado' | 'recusado'
+  brandStatus: 'submitted' | 'approved' | 'rejected' | 'pending'
+  decision: 'pending' | 'confirmed' | 'declined'
 }
 
 export interface ApiMeFinance {
@@ -464,7 +464,7 @@ export function toModel(m: ApiModel): Model {
     hairColor: m.hairColor ?? '',
     city: m.city ?? '',
     state: m.state ?? '',
-    status: (m.status as Model['status']) ?? 'disponivel',
+    status: (m.status as Model['status']) ?? 'available',
     instagram: m.instagram ?? '',
     experience: [],
     worksHistory: [],

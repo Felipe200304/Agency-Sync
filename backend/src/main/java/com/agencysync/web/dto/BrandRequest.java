@@ -11,7 +11,7 @@ public record BrandRequest(@NotBlank String name, String responsible, String ema
         b.setResponsible(responsible);
         b.setEmail(email);
         b.setPhone(phone);
-        b.setStatus(status == null || status.isBlank() ? "ativo" : status);
+        b.setStatus(status == null || status.isBlank() ? "active" : status);
         b.setCnpj(cnpj);
         b.setLegalName(legalName);
         if (address != null) b.setAddress(address.applyTo(b.getAddress()));

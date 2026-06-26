@@ -27,7 +27,7 @@ public record ModelRequest(
         m.setEyeColor(eyeColor);
         m.setHairColor(hairColor);
         m.setInstagram(instagram);
-        m.setStatus(status == null || status.isBlank() ? "disponivel" : status);
+        m.setStatus(status == null || status.isBlank() ? "available" : status);
         m.setPhotoUrl(photoUrl == null || photoUrl.isBlank() ? null : photoUrl);
         return m;
     }

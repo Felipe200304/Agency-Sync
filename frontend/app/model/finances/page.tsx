@@ -9,11 +9,11 @@ const fmt = (v: number, currency = 'BRL') => v.toLocaleString('pt-BR', { style: 
 const fmtDate = (d: string | null) => (d ? new Date(d + 'T12:00:00').toLocaleDateString('pt-BR') : '—')
 
 const statusColors: Record<string, string> = {
-  pago: 'text-primary bg-primary/10 border-primary/20',
-  pendente: 'text-yellow-400 bg-yellow-400/10 border-yellow-400/20',
-  atrasado: 'text-destructive bg-destructive/10 border-destructive/20',
+  paid: 'text-primary bg-primary/10 border-primary/20',
+  pending: 'text-yellow-400 bg-yellow-400/10 border-yellow-400/20',
+  overdue: 'text-destructive bg-destructive/10 border-destructive/20',
 }
-const statusLabel: Record<string, string> = { pago: 'Pago', pendente: 'Pendente', atrasado: 'Atrasado' }
+const statusLabel: Record<string, string> = { paid: 'Pago', pending: 'Pendente', overdue: 'Atrasado' }
 
 export default function FinancasPage() {
   const [data, setData] = useState<ApiMeFinance | null>(null)

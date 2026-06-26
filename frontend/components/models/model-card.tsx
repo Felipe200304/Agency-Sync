@@ -2,9 +2,9 @@ import Link from 'next/link'
 import type { Model } from '@/lib/types'
 
 const statusLabel: Record<string, { label: string; color: string }> = {
-  'disponivel': { label: 'Disponível', color: 'text-green-400 bg-green-400/10' },
-  'em-campanha': { label: 'Em Campanha', color: 'text-primary bg-primary/10' },
-  'inativo': { label: 'Inativo', color: 'text-muted-foreground bg-muted/50' },
+  'available': { label: 'Disponível', color: 'text-green-400 bg-green-400/10' },
+  'on-campaign': { label: 'Em Campanha', color: 'text-primary bg-primary/10' },
+  'inactive': { label: 'Inativo', color: 'text-muted-foreground bg-muted/50' },
 }
 
 export function ModelCard({ model }: { model: Model }) {

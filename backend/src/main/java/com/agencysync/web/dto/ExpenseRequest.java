@@ -17,7 +17,7 @@ public record ExpenseRequest(
         e.setAmount(amount);
         e.setCurrency(currency == null || currency.isBlank() ? "BRL" : currency);
         e.setExpenseDate(date);
-        e.setStatus(status == null || status.isBlank() ? "pendente" : status);
+        e.setStatus(status == null || status.isBlank() ? "pending" : status);
         return e;
     }
 }

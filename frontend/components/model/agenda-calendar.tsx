@@ -24,11 +24,11 @@ const formatCurrency = (v: number | null) =>
  * Trabalho = a marca aprovou o modelo (selecionada para o job) → dourado.
  * Casting = o modelo confirmou presença no teste, aguardando a marca → azul.
  */
-type JobState = 'trabalho' | 'casting'
-const stateOf = (j: ApiJob): JobState => (j.brandStatus === 'aprovado' ? 'trabalho' : 'casting')
+type JobState = 'job' | 'casting'
+const stateOf = (j: ApiJob): JobState => (j.brandStatus === 'approved' ? 'job' : 'casting')
 
 const stateStyle: Record<JobState, { pill: string; dot: string; border: string; label: string }> = {
-  trabalho: { pill: 'bg-primary/15 text-primary', dot: 'bg-primary', border: 'border-l-primary', label: 'Trabalho' },
+  job: { pill: 'bg-primary/15 text-primary', dot: 'bg-primary', border: 'border-l-primary', label: 'Trabalho' },
   casting: { pill: 'bg-blue-400/15 text-blue-300', dot: 'bg-blue-400', border: 'border-l-blue-400', label: 'Casting' },
 }
 
@@ -112,7 +112,7 @@ export function AgendaCalendar({ jobs }: { jobs: ApiJob[] }) {
 
       {/* Legenda */}
       <div className="flex items-center gap-4 mb-4">
-        {(['trabalho', 'casting'] as JobState[]).map(s => (
+        {(['job', 'casting'] as JobState[]).map(s => (
           <div key={s} className="flex items-center gap-1.5">
             <span className={`w-2 h-2 rounded-full ${stateStyle[s].dot}`} />
             <span className="text-xs text-muted-foreground">{stateStyle[s].label}</span>
@@ -208,14 +208,14 @@ export function AgendaCalendar({ jobs }: { jobs: ApiJob[] }) {
                       </div>
                       <div className="flex gap-2 mt-3">
                         <button
-                          onClick={() => decide(j.castingId, 'confirmado')}
-                          disabled={busy === j.castingId || j.decision === 'confirmado'}
+                          onClick={() => decide(j.castingId, 'confirmed')}
+                          disabled={busy === j.castingId || j.decision === 'confirmed'}
                           className="text-xs px-3 py-1.5 rounded-sm bg-primary/10 text-primary border border-primary/20 hover:bg-primary/20 transition-all disabled:opacity-40"
                         >
                           Confirmar
                         </button>
                         <button
-                          onClick={() => decide(j.castingId, 'recusado')}
+                          onClick={() => decide(j.castingId, 'declined')}
                           disabled={busy === j.castingId}
                           className="text-xs px-3 py-1.5 rounded-sm bg-destructive/10 text-destructive border border-destructive/20 hover:bg-destructive/20 transition-all disabled:opacity-40"
                         >

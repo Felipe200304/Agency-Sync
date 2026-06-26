@@ -62,7 +62,7 @@ class CastingController {
         Brand brand = req.brandId() == null ? null
                 : brands.findById(req.brandId()).orElseThrow(() -> new NotFoundException("Marca", req.brandId()));
         Casting casting = req.applyTo(new Casting(), brand);
-        casting.setStatus("solicitado");
+        casting.setStatus("requested");
         Casting saved = castings.save(casting);
         notifications.newCastingToAgency(saved);
         return CastingDto.from(saved);
@@ -88,14 +88,14 @@ class CastingController {
             CastingModel cm = new CastingModel();
             cm.setCasting(casting);
             cm.setModel(model);
-            cm.setStatus("enviado");
-            cm.setModelDecision("pendente");
+            cm.setStatus("submitted");
+            cm.setModelDecision("pending");
             casting.getModels().add(cm);
             added.add(model);
         }
-        boolean earlyStage = "solicitado".equals(casting.getStatus()) || "em-analise".equals(casting.getStatus());
+        boolean earlyStage = "requested".equals(casting.getStatus()) || "reviewing".equals(casting.getStatus());
         if (!casting.getModels().isEmpty() && earlyStage) {
-            casting.setStatus("modelos-enviados");
+            casting.setStatus("models-submitted");
         }
         Casting saved = castings.save(casting);
         added.forEach(m -> notifications.castingToModel(saved, m));
@@ -112,7 +112,7 @@ class CastingController {
                 .orElseThrow(() -> new NotFoundException("Modelo no casting", modelId));
         cm.setStatus(req.status());
         Casting saved = castings.save(casting);
-        if ("aprovado".equals(req.status())) {
+        if ("approved".equals(req.status())) {
             notifications.workConfirmedToModel(saved, cm.getModel());
         }
         return CastingDto.from(saved);

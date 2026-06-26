@@ -12,32 +12,32 @@ import type { ApiCasting, ApiModel } from '@/lib/api'
 import type { CastingStatus } from '@/lib/types'
 
 const statusLabels: Record<string, string> = {
-  'solicitado': 'Solicitado',
-  'em-analise': 'Em Análise',
-  'modelos-enviados': 'Modelos Enviados',
-  'em-avaliacao': 'Em Avaliação',
-  'confirmado': 'Confirmado',
-  'concluido': 'Concluído',
+  'requested': 'Solicitado',
+  'reviewing': 'Em Análise',
+  'models-submitted': 'Modelos Enviados',
+  'evaluating': 'Em Avaliação',
+  'confirmed': 'Confirmado',
+  'completed': 'Concluído',
 }
 
 const statusColors: Record<string, string> = {
-  'solicitado': 'text-blue-400 bg-blue-400/10 border-blue-400/20',
-  'em-analise': 'text-yellow-400 bg-yellow-400/10 border-yellow-400/20',
-  'modelos-enviados': 'text-orange-400 bg-orange-400/10 border-orange-400/20',
-  'em-avaliacao': 'text-purple-400 bg-purple-400/10 border-purple-400/20',
-  'confirmado': 'text-primary bg-primary/10 border-primary/20',
-  'concluido': 'text-muted-foreground bg-muted/30 border-border',
+  'requested': 'text-blue-400 bg-blue-400/10 border-blue-400/20',
+  'reviewing': 'text-yellow-400 bg-yellow-400/10 border-yellow-400/20',
+  'models-submitted': 'text-orange-400 bg-orange-400/10 border-orange-400/20',
+  'evaluating': 'text-purple-400 bg-purple-400/10 border-purple-400/20',
+  'confirmed': 'text-primary bg-primary/10 border-primary/20',
+  'completed': 'text-muted-foreground bg-muted/30 border-border',
 }
 
 const modelStatusIcon: Record<string, React.ReactNode> = {
-  'enviado': <Clock3 className="w-3 h-3 text-yellow-400" />,
-  'aprovado': <CheckCircle className="w-3 h-3 text-primary" />,
-  'reprovado': <XCircle className="w-3 h-3 text-destructive" />,
-  'pendente': <Clock3 className="w-3 h-3 text-muted-foreground" />,
+  'submitted': <Clock3 className="w-3 h-3 text-yellow-400" />,
+  'approved': <CheckCircle className="w-3 h-3 text-primary" />,
+  'rejected': <XCircle className="w-3 h-3 text-destructive" />,
+  'pending': <Clock3 className="w-3 h-3 text-muted-foreground" />,
 }
 
 const modelStatusLabel: Record<string, string> = {
-  enviado: 'Enviado', aprovado: 'Aprovado', reprovado: 'Reprovado', pendente: 'Pendente',
+  submitted: 'Enviado', approved: 'Aprovado', rejected: 'Reprovado', pending: 'Pendente',
 }
 
 const formatCurrency = (v: number | null) =>
@@ -70,10 +70,10 @@ export default function CastingDetailPage() {
   if (loading) return <div className="p-6 text-sm text-muted-foreground">Carregando…</div>
   if (!casting) return <div className="p-6 text-sm text-red-400">{error ?? 'Casting não encontrado.'}</div>
 
-  const approved = casting.models.filter(m => m.status === 'aprovado').length
+  const approved = casting.models.filter(m => m.status === 'approved').length
   const availableModels = allModels
     .map(toModel)
-    .filter(m => m.status !== 'inativo' && !casting.models.some(cm => cm.modelId === m.id))
+    .filter(m => m.status !== 'inactive' && !casting.models.some(cm => cm.modelId === m.id))
 
   return (
     <div className="p-6 max-w-6xl mx-auto">
@@ -195,13 +195,13 @@ export default function CastingDetailPage() {
                       </div>
                       <div className="flex gap-2">
                         <button
-                          onClick={() => act(() => api.decideCastingModel(casting.id, cm.modelId, 'aprovado'))}
+                          onClick={() => act(() => api.decideCastingModel(casting.id, cm.modelId, 'approved'))}
                           className="text-xs px-2 py-1 rounded-sm bg-primary/10 text-primary border border-primary/20 hover:bg-primary/20 transition-all"
                         >
                           Aprovar
                         </button>
                         <button
-                          onClick={() => act(() => api.decideCastingModel(casting.id, cm.modelId, 'reprovado'))}
+                          onClick={() => act(() => api.decideCastingModel(casting.id, cm.modelId, 'rejected'))}
                           className="text-xs px-2 py-1 rounded-sm bg-destructive/10 text-destructive border border-destructive/20 hover:bg-destructive/20 transition-all"
                         >
                           Reprovar

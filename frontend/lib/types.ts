@@ -1,7 +1,7 @@
-export type ModelStatus = 'disponivel' | 'em-campanha' | 'inativo'
-export type CastingStatus = 'solicitado' | 'em-analise' | 'modelos-enviados' | 'em-avaliacao' | 'confirmado' | 'concluido'
-export type PaymentStatus = 'pendente' | 'pago' | 'atrasado'
-export type EventType = 'casting' | 'trabalho' | 'reuniao' | 'producao' | 'evento'
+export type ModelStatus = 'available' | 'on-campaign' | 'inactive'
+export type CastingStatus = 'requested' | 'reviewing' | 'models-submitted' | 'evaluating' | 'confirmed' | 'completed'
+export type PaymentStatus = 'pending' | 'paid' | 'overdue'
+export type EventType = 'casting' | 'job' | 'meeting' | 'production' | 'event'
 export type StaffRole = 'administrador' | 'booker' | 'scout' | 'financeiro'
 export type UserRole = 'agencia' | 'modelo' | 'cliente'
 
@@ -76,7 +76,7 @@ export interface CastingModel {
   modelId: string
   modelName: string
   modelPhoto: string
-  status: 'enviado' | 'aprovado' | 'reprovado' | 'pendente'
+  status: 'submitted' | 'approved' | 'rejected' | 'pending'
 }
 
 export interface CalendarEvent {
@@ -114,7 +114,7 @@ export interface Client {
   state: string
   campaigns: number
   lastCampaign?: string
-  status: 'ativo' | 'inativo'
+  status: 'active' | 'inactive'
   logo?: string
 }
 

@@ -8,12 +8,12 @@ import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, LineChart, L
 import { TrendingUp, DollarSign, AlertCircle, Clock, Plus, Trash2, Scale } from 'lucide-react'
 import { DateInput } from '@/components/ui/date-input'
 
-const statusLabels: Record<PaymentStatus, string> = { pago: 'Pago', pendente: 'Pendente', atrasado: 'Atrasado' }
+const statusLabels: Record<PaymentStatus, string> = { paid: 'Pago', pending: 'Pendente', overdue: 'Atrasado' }
 
 const statusColors: Record<PaymentStatus, string> = {
-  pago: 'text-primary bg-primary/10 border-primary/20',
-  pendente: 'text-yellow-400 bg-yellow-400/10 border-yellow-400/20',
-  atrasado: 'text-destructive bg-destructive/10 border-destructive/20',
+  paid: 'text-primary bg-primary/10 border-primary/20',
+  pending: 'text-yellow-400 bg-yellow-400/10 border-yellow-400/20',
+  overdue: 'text-destructive bg-destructive/10 border-destructive/20',
 }
 
 const fmt = (val: number, currency = 'BRL') =>
@@ -71,7 +71,7 @@ export default function FinanceiroPage() {
   }
 
   async function toggleExpense(e: ApiExpense) {
-    try { await api.setExpenseStatus(e.id, e.status === 'pago' ? 'pendente' : 'pago'); await load() }
+    try { await api.setExpenseStatus(e.id, e.status === 'paid' ? 'pending' : 'paid'); await load() }
     catch { setError('Não foi possível atualizar a despesa.') }
   }
 
@@ -83,8 +83,8 @@ export default function FinanceiroPage() {
   const totalReceita = records.reduce((s, r) => s + r.cachet, 0)
   const totalComissoes = records.reduce((s, r) => s + r.agencyComission, 0)
   const totalRepasses = records.reduce((s, r) => s + r.modelValue, 0)
-  const totalPendente = records.filter(r => r.status === 'pendente').reduce((s, r) => s + r.cachet, 0)
-  const totalAtrasado = records.filter(r => r.status === 'atrasado').reduce((s, r) => s + r.cachet, 0)
+  const totalPendente = records.filter(r => r.status === 'pending').reduce((s, r) => s + r.cachet, 0)
+  const totalAtrasado = records.filter(r => r.status === 'overdue').reduce((s, r) => s + r.cachet, 0)
   const totalDespesas = expenses.reduce((s, e) => s + e.amount, 0)
   const resultado = totalComissoes - totalDespesas // resultado da agência: comissões − despesas
 
@@ -107,8 +107,8 @@ export default function FinanceiroPage() {
           { label: 'Receita Total', value: totalReceita, icon: DollarSign, color: 'text-green-400', sub: 'todos os cachês' },
           { label: 'Comissões', value: totalComissoes, icon: TrendingUp, color: 'text-primary', sub: 'agência' },
           { label: 'Repasses', value: totalRepasses, icon: TrendingUp, color: 'text-blue-400', sub: 'para modelos' },
-          { label: 'A Receber', value: totalPendente, icon: Clock, color: 'text-yellow-400', sub: 'pendente' },
-          { label: 'Em Atraso', value: totalAtrasado, icon: AlertCircle, color: 'text-destructive', sub: 'atrasado' },
+          { label: 'A Receber', value: totalPendente, icon: Clock, color: 'text-yellow-400', sub: 'pending' },
+          { label: 'Em Atraso', value: totalAtrasado, icon: AlertCircle, color: 'text-destructive', sub: 'overdue' },
         ].map(({ label, value, icon: Icon, color, sub }) => (
           <div key={label} className="glass rounded-sm p-4">
             <div className="flex items-center gap-2 mb-3">
@@ -153,7 +153,7 @@ export default function FinanceiroPage() {
         <div className="flex items-center justify-between p-4 border-b border-border">
           <h2 className="font-heading text-lg font-light">Transações</h2>
           <div className="flex rounded-sm border border-border overflow-hidden">
-            {(['todos', 'pago', 'pendente', 'atrasado'] as const).map(f => (
+            {(['todos', 'paid', 'pending', 'overdue'] as const).map(f => (
               <button key={f} onClick={() => setFilter(f)}
                 className={`px-3 py-1 text-xs tracking-wider capitalize transition-all ${
                   filter === f ? 'bg-primary text-primary-foreground' : 'text-muted-foreground hover:text-foreground'
@@ -192,9 +192,9 @@ export default function FinanceiroPage() {
                     onChange={e => changeStatus(r.id, e.target.value)}
                     className={`text-xs px-2 py-0.5 rounded-sm border bg-transparent cursor-pointer focus:outline-none ${statusColors[r.status]}`}
                   >
-                    <option value="pago">Pago</option>
-                    <option value="pendente">Pendente</option>
-                    <option value="atrasado">Atrasado</option>
+                    <option value="paid">Pago</option>
+                    <option value="pending">Pendente</option>
+                    <option value="overdue">Atrasado</option>
                   </select>
                 </td>
               </tr>
@@ -263,11 +263,11 @@ export default function FinanceiroPage() {
                   <td className="px-4 py-3">
                     <button onClick={() => toggleExpense(e)}
                       className={`text-xs px-2 py-0.5 rounded-sm border ${
-                        e.status === 'pago'
+                        e.status === 'paid'
                           ? 'text-primary bg-primary/10 border-primary/20'
                           : 'text-yellow-400 bg-yellow-400/10 border-yellow-400/20'
                       }`}>
-                      {e.status === 'pago' ? 'Pago' : 'Pendente'}
+                      {e.status === 'paid' ? 'Pago' : 'Pendente'}
                     </button>
                   </td>
                   <td className="px-4 py-3 text-right">

@@ -93,7 +93,7 @@ class FinanceController {
     FinanceRecordDto updateStatus(@PathVariable UUID id, @Valid @RequestBody StatusRequest req) {
         FinanceRecord r = finance.findById(id).orElseThrow(() -> new NotFoundException("Lançamento", id));
         r.setStatus(req.status());
-        r.setPaymentDate("pago".equals(req.status()) ? LocalDate.now() : null);
+        r.setPaymentDate("paid".equals(req.status()) ? LocalDate.now() : null);
         return FinanceRecordDto.from(finance.save(r));
     }
 

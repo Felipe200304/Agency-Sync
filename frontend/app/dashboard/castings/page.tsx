@@ -30,6 +30,27 @@ function formatCurrency(val: number | null) {
   return val.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })
 }
 
+/** Seletor de status reutilizável (lista e kanban). */
+function StatusSelect({
+  value, onChange, className,
+}: { value: string; onChange: (status: string) => void; className?: string }) {
+  const color = columns.find(c => c.status === value)?.color ?? 'text-foreground'
+  return (
+    <select
+      value={value}
+      onChange={e => onChange(e.target.value)}
+      onClick={e => e.stopPropagation()}
+      className={`bg-muted/40 border border-border rounded-sm px-2 py-1 text-xs focus:outline-none focus:border-primary/60 transition-colors cursor-pointer ${color} ${className ?? ''}`}
+    >
+      {columns.map(col => (
+        <option key={col.status} value={col.status} className="text-foreground bg-card">
+          {col.label}
+        </option>
+      ))}
+    </select>
+  )
+}
+
 function formatDate(d: string | null) {
   return d ? new Date(d + 'T12:00:00').toLocaleDateString('pt-BR') : '—'
 }
@@ -44,6 +65,19 @@ export default function CastingsPage() {
       .then(setCastings)
       .catch(() => setError('Não foi possível carregar os castings. O backend está rodando?'))
   }, [])
+
+  /** Atualiza o status na hora (otimista) e reverte se a API falhar. */
+  async function changeStatus(id: string, status: string) {
+    const snapshot = castings
+    setError(null)
+    setCastings(cs => cs.map(c => (c.id === id ? { ...c, status } : c)))
+    try {
+      await api.setCastingStatus(id, status)
+    } catch {
+      setCastings(snapshot)
+      setError('Não foi possível atualizar o status do casting.')
+    }
+  }
 
   return (
     <div className="p-6 h-full flex flex-col">
@@ -101,8 +135,8 @@ export default function CastingsPage() {
                       </div>
                     )}
                     {colCastings.map(c => (
-                      <Link key={c.id} href={`/dashboard/castings/${c.id}`}>
-                        <div className="glass rounded-sm p-4 hover:border-primary/30 transition-all cursor-pointer group">
+                      <div key={c.id} className="glass rounded-sm p-4 hover:border-primary/30 transition-all group">
+                        <Link href={`/dashboard/castings/${c.id}`} className="block cursor-pointer">
                           <p className="text-xs text-primary font-medium tracking-wider mb-1">{c.brand}</p>
                           <h3 className="text-sm font-medium leading-snug mb-3 group-hover:text-primary transition-colors line-clamp-2">
                             {c.title}
@@ -138,8 +172,11 @@ export default function CastingsPage() {
                               ))}
                             </div>
                           </div>
+                        </Link>
+                        <div className="mt-3 pt-3 border-t border-border/40">
+                          <StatusSelect value={c.status} onChange={s => changeStatus(c.id, s)} className="w-full" />
                         </div>
-                      </Link>
+                      </div>
                     ))}
                   </div>
                 </div>
@@ -160,31 +197,25 @@ export default function CastingsPage() {
               </tr>
             </thead>
             <tbody>
-              {castings.map((c, i) => {
-                const col = columns.find(cl => cl.status === c.status)!
-                return (
-                  <tr key={c.id} className={`border-b border-border/50 hover:bg-muted/30 transition-colors ${i % 2 === 0 ? '' : 'bg-muted/10'}`}>
-                    <td className="px-4 py-3">
-                      <Link href={`/dashboard/castings/${c.id}`} className="text-sm hover:text-primary transition-colors line-clamp-1">
-                        {c.title}
-                      </Link>
-                    </td>
-                    <td className="px-4 py-3 text-sm text-muted-foreground">{c.brand}</td>
-                    <td className="px-4 py-3 text-sm text-muted-foreground">
-                      {formatDate(c.date)}
-                    </td>
-                    <td className="px-4 py-3 text-sm text-muted-foreground">{c.city}, {c.state}</td>
-                    <td className="px-4 py-3 text-sm text-muted-foreground">{formatCurrency(c.cachet)}</td>
-                    <td className="px-4 py-3 text-sm text-muted-foreground">{c.models.length}/{c.modelsNeeded}</td>
-                    <td className="px-4 py-3">
-                      <span className={`flex items-center gap-1.5 text-xs ${col.color}`}>
-                        <span className={`w-1.5 h-1.5 rounded-full ${statusDot[c.status]}`} />
-                        {col.label}
-                      </span>
-                    </td>
-                  </tr>
-                )
-              })}
+              {castings.map((c, i) => (
+                <tr key={c.id} className={`border-b border-border/50 hover:bg-muted/30 transition-colors ${i % 2 === 0 ? '' : 'bg-muted/10'}`}>
+                  <td className="px-4 py-3">
+                    <Link href={`/dashboard/castings/${c.id}`} className="text-sm hover:text-primary transition-colors line-clamp-1">
+                      {c.title}
+                    </Link>
+                  </td>
+                  <td className="px-4 py-3 text-sm text-muted-foreground">{c.brand}</td>
+                  <td className="px-4 py-3 text-sm text-muted-foreground">
+                    {formatDate(c.date)}
+                  </td>
+                  <td className="px-4 py-3 text-sm text-muted-foreground">{c.city}, {c.state}</td>
+                  <td className="px-4 py-3 text-sm text-muted-foreground">{formatCurrency(c.cachet)}</td>
+                  <td className="px-4 py-3 text-sm text-muted-foreground">{c.models.length}/{c.modelsNeeded}</td>
+                  <td className="px-4 py-3">
+                    <StatusSelect value={c.status} onChange={s => changeStatus(c.id, s)} />
+                  </td>
+                </tr>
+              ))}
             </tbody>
           </table>
         </div>

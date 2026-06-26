@@ -6,6 +6,7 @@ import { useRouter } from 'next/navigation'
 import { ArrowLeft } from 'lucide-react'
 import { api } from '@/lib/api'
 import { DateInput } from '@/components/ui/date-input'
+import { TimeInput } from '@/components/ui/time-input'
 
 type Form = {
   title: string; date: string; time: string; location: string; city: string
@@ -83,7 +84,7 @@ export default function NovoCastingClientePage() {
               </div>
               <div>
                 <label className="text-xs text-muted-foreground tracking-wider uppercase">Horário preferencial</label>
-                <input type="time" value={form.time} onChange={set('time')} className={cls} />
+                <TimeInput value={form.time} onChange={v => set('time')({ target: { value: v } })} className={cls} />
               </div>
               <div>
                 <label className="text-xs text-muted-foreground tracking-wider uppercase">Local / Estúdio</label>

@@ -7,6 +7,7 @@ import { ArrowLeft } from 'lucide-react'
 import { api } from '@/lib/api'
 import type { ApiBrand } from '@/lib/api'
 import { DateInput } from '@/components/ui/date-input'
+import { TimeInput } from '@/components/ui/time-input'
 
 type Form = {
   brandId: string; responsible: string; email: string; phone: string
@@ -120,7 +121,7 @@ export default function NewCastingPage() {
             </div>
             <div>
               <label className="text-xs text-muted-foreground tracking-wider uppercase">Horário</label>
-              <input type="time" value={form.time} onChange={set('time')} className={inputCls} />
+              <TimeInput value={form.time} onChange={v => set('time')({ target: { value: v } })} className={inputCls} />
             </div>
             <div>
               <label className="text-xs text-muted-foreground tracking-wider uppercase">Local / Estúdio</label>

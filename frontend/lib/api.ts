@@ -200,15 +200,26 @@ export interface AgencyDto {
   city: string | null
 }
 
+export interface Address {
+  cep?: string | null
+  street?: string | null
+  number?: string | null
+  complement?: string | null
+  district?: string | null
+  city?: string | null
+  state?: string | null
+}
+
 export interface ApiBrand {
   id: string
   name: string
   responsible: string | null
   email: string | null
   phone: string | null
-  city: string | null
-  state: string | null
   status: string
+  cnpj: string | null
+  legalName: string | null
+  address: Address | null
 }
 
 export interface NewBrand {
@@ -216,9 +227,10 @@ export interface NewBrand {
   responsible?: string
   email?: string
   phone?: string
-  city?: string
-  state?: string
   status?: string
+  cnpj?: string
+  legalName?: string
+  address?: Address
 }
 
 export type Role = 'AGENCY' | 'MODEL' | 'BRAND'

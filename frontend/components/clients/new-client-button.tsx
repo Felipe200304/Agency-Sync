@@ -5,10 +5,17 @@ import { useRouter } from 'next/navigation'
 import { Plus, X } from 'lucide-react'
 import { api } from '@/lib/api'
 
-const initial = { name: '', responsible: '', email: '', phone: '', city: '', state: '' }
+const initial = {
+  name: '', legalName: '', cnpj: '', responsible: '', email: '', phone: '',
+  cep: '', street: '', number: '', complement: '', district: '', city: '', state: '',
+}
 const ufs = ['SP', 'RJ', 'MG', 'RS', 'PR', 'SC', 'BA', 'PE', 'CE', 'GO', 'DF']
 
-/** Botão "Novo Cliente" + modal de cadastro (POST /api/brands). */
+const fieldClass =
+  'mt-1 w-full bg-muted/40 border border-border rounded-sm px-3 py-2 text-sm focus:outline-none focus:border-primary/60 transition-colors'
+const labelClass = 'text-xs text-muted-foreground tracking-wider uppercase'
+
+/** Botão "Novo Cliente" + modal de cadastro (POST /api/brands) com dados fiscais. */
 export function NewClientButton() {
   const router = useRouter()
   const [open, setOpen] = useState(false)
@@ -36,11 +43,20 @@ export function NewClientButton() {
     try {
       await api.createBrand({
         name: form.name.trim(),
+        legalName: form.legalName || undefined,
+        cnpj: form.cnpj || undefined,
         responsible: form.responsible || undefined,
         email: form.email || undefined,
         phone: form.phone || undefined,
-        city: form.city || undefined,
-        state: form.state || undefined,
+        address: {
+          cep: form.cep || undefined,
+          street: form.street || undefined,
+          number: form.number || undefined,
+          complement: form.complement || undefined,
+          district: form.district || undefined,
+          city: form.city || undefined,
+          state: form.state || undefined,
+        },
       })
       close()
       router.refresh()
@@ -61,9 +77,9 @@ export function NewClientButton() {
       </button>
 
       {open && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-background/70" onClick={close}>
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70" onClick={close}>
           <div
-            className="glass rounded-sm w-full max-w-lg p-6 relative"
+            className="bg-card border border-border shadow-2xl rounded-sm w-full max-w-2xl max-h-[90vh] overflow-y-auto p-6 relative"
             onClick={e => e.stopPropagation()}
           >
             <button
@@ -75,44 +91,78 @@ export function NewClientButton() {
             </button>
 
             <h2 className="font-heading text-2xl font-light mb-1">Novo Cliente</h2>
-            <p className="text-sm text-muted-foreground mb-6">Cadastre uma marca/empresa</p>
+            <p className="text-sm text-muted-foreground mb-6">Dados reais da empresa para emissão de NF</p>
 
-            <form onSubmit={handleSubmit} className="space-y-4">
-              <div>
-                <label className="text-xs text-muted-foreground tracking-wider uppercase">Nome *</label>
-                <input value={form.name} onChange={set('name')} autoFocus className="mt-1 w-full bg-muted/40 border border-border rounded-sm px-3 py-2 text-sm focus:outline-none focus:border-primary/60 transition-colors" placeholder="Nome da marca/empresa" />
-              </div>
+            <form onSubmit={handleSubmit} className="space-y-5">
+              {/* Identificação */}
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="text-xs text-muted-foreground tracking-wider uppercase">Responsável</label>
-                  <input value={form.responsible} onChange={set('responsible')} className="mt-1 w-full bg-muted/40 border border-border rounded-sm px-3 py-2 text-sm focus:outline-none focus:border-primary/60 transition-colors" placeholder="Contato" />
+                  <label className={labelClass}>Nome fantasia *</label>
+                  <input value={form.name} onChange={set('name')} autoFocus className={fieldClass} placeholder="Como o cliente é conhecido" />
                 </div>
                 <div>
-                  <label className="text-xs text-muted-foreground tracking-wider uppercase">Telefone</label>
-                  <input value={form.phone} onChange={set('phone')} className="mt-1 w-full bg-muted/40 border border-border rounded-sm px-3 py-2 text-sm focus:outline-none focus:border-primary/60 transition-colors" placeholder="(00) 90000-0000" />
+                  <label className={labelClass}>Razão social</label>
+                  <input value={form.legalName} onChange={set('legalName')} className={fieldClass} placeholder="Nome jurídico (NF)" />
+                </div>
+                <div>
+                  <label className={labelClass}>CNPJ</label>
+                  <input value={form.cnpj} onChange={set('cnpj')} className={fieldClass} placeholder="00.000.000/0000-00" />
+                </div>
+                <div>
+                  <label className={labelClass}>Responsável</label>
+                  <input value={form.responsible} onChange={set('responsible')} className={fieldClass} placeholder="Contato" />
+                </div>
+                <div>
+                  <label className={labelClass}>E-mail</label>
+                  <input type="email" value={form.email} onChange={set('email')} className={fieldClass} placeholder="email@exemplo.com" />
+                </div>
+                <div>
+                  <label className={labelClass}>Telefone</label>
+                  <input value={form.phone} onChange={set('phone')} className={fieldClass} placeholder="(00) 90000-0000" />
                 </div>
               </div>
+
+              {/* Endereço fiscal */}
               <div>
-                <label className="text-xs text-muted-foreground tracking-wider uppercase">E-mail</label>
-                <input type="email" value={form.email} onChange={set('email')} className="mt-1 w-full bg-muted/40 border border-border rounded-sm px-3 py-2 text-sm focus:outline-none focus:border-primary/60 transition-colors" placeholder="email@exemplo.com" />
-              </div>
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <label className="text-xs text-muted-foreground tracking-wider uppercase">Cidade</label>
-                  <input value={form.city} onChange={set('city')} className="mt-1 w-full bg-muted/40 border border-border rounded-sm px-3 py-2 text-sm focus:outline-none focus:border-primary/60 transition-colors" placeholder="São Paulo" />
-                </div>
-                <div>
-                  <label className="text-xs text-muted-foreground tracking-wider uppercase">Estado</label>
-                  <select value={form.state} onChange={set('state')} className="mt-1 w-full bg-muted/40 border border-border rounded-sm px-3 py-2 text-sm focus:outline-none focus:border-primary/60 transition-colors text-foreground">
-                    <option value="">Selecione</option>
-                    {ufs.map(uf => <option key={uf}>{uf}</option>)}
-                  </select>
+                <p className="text-xs tracking-widest uppercase text-muted-foreground mb-3">Endereço fiscal</p>
+                <div className="grid grid-cols-6 gap-4">
+                  <div className="col-span-2">
+                    <label className={labelClass}>CEP</label>
+                    <input value={form.cep} onChange={set('cep')} className={fieldClass} placeholder="00000-000" />
+                  </div>
+                  <div className="col-span-4">
+                    <label className={labelClass}>Logradouro</label>
+                    <input value={form.street} onChange={set('street')} className={fieldClass} placeholder="Rua / Avenida" />
+                  </div>
+                  <div className="col-span-2">
+                    <label className={labelClass}>Número</label>
+                    <input value={form.number} onChange={set('number')} className={fieldClass} placeholder="123" />
+                  </div>
+                  <div className="col-span-4">
+                    <label className={labelClass}>Complemento</label>
+                    <input value={form.complement} onChange={set('complement')} className={fieldClass} placeholder="Sala / Andar" />
+                  </div>
+                  <div className="col-span-2">
+                    <label className={labelClass}>Bairro</label>
+                    <input value={form.district} onChange={set('district')} className={fieldClass} placeholder="Bairro" />
+                  </div>
+                  <div className="col-span-3">
+                    <label className={labelClass}>Cidade</label>
+                    <input value={form.city} onChange={set('city')} className={fieldClass} placeholder="São Paulo" />
+                  </div>
+                  <div className="col-span-1">
+                    <label className={labelClass}>UF</label>
+                    <select value={form.state} onChange={set('state')} className={`${fieldClass} text-foreground`}>
+                      <option value="">—</option>
+                      {ufs.map(uf => <option key={uf}>{uf}</option>)}
+                    </select>
+                  </div>
                 </div>
               </div>
 
               {error && <p className="text-sm text-red-400">{error}</p>}
 
-              <div className="flex justify-end gap-3 pt-2">
+              <div className="flex justify-end gap-3 pt-1">
                 <button type="button" onClick={close} className="px-5 py-2 rounded-sm border border-border text-sm text-muted-foreground hover:text-foreground hover:border-foreground/30 transition-all">
                   Cancelar
                 </button>

@@ -90,7 +90,7 @@ export default async function ClientsPage() {
                 <td className="px-5 py-4">
                   <div className="flex items-center gap-1.5 text-sm text-muted-foreground">
                     <MapPin className="w-3 h-3" />
-                    {[b.city, b.state].filter(Boolean).join(', ') || '—'}
+                    {[b.address?.city, b.address?.state].filter(Boolean).join(', ') || '—'}
                   </div>
                 </td>
                 <td className="px-5 py-4">

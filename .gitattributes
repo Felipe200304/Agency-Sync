@@ -1,0 +1,7 @@
+# Scripts shell precisam de LF (rodam em Linux/Docker e no git-bash).
+mvnw text eol=lf
+*.sh text eol=lf
+
+# Scripts batch do Windows precisam de CRLF.
+mvnw.cmd text eol=crlf
+*.cmd text eol=crlf
